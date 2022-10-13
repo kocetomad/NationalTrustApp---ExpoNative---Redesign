@@ -2,7 +2,7 @@ import * as React from "react";
 import { View, Text } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import MyMap from "./mapview";
+import MyMap from "./Mapview";
 import { SafeAreaView, StyleSheet, Image, Linking } from "react-native";
 
 import {
