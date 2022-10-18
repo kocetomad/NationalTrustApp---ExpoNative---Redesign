@@ -4,6 +4,9 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import MyMap from "./Mapview";
 import { SafeAreaView, StyleSheet, Image, Linking } from "react-native";
+import BottomDrawer from "react-native-bottom-drawer-view";
+
+const TAB_BAR_HEIGHT = 1000;
 
 import {
   DrawerContentScrollView,
@@ -17,7 +20,7 @@ const CustomSidebarMenu = (props) => {
   const proileImage = "react_logo.png";
 
   return (
-    <SafeAreaView style={{ flex: 1, flexDirection:'column' }}>
+    <SafeAreaView style={{ flex: 1, flexDirection: "column" }}>
       {/*Top Large Image */}
       <Image
         source={{ uri: BASE_PATH + proileImage }}
@@ -25,22 +28,18 @@ const CustomSidebarMenu = (props) => {
       />
       <DrawerContentScrollView {...props}>
         <DrawerItemList {...props} />
-        
       </DrawerContentScrollView>
-      
     </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({
   sideMenuProfileIcon: {
-    resizeMode: 'center',
+    resizeMode: "center",
     width: 100,
     height: 100,
-    alignSelf: 'flex-start',
+    alignSelf: "flex-start",
   },
-  
 });
-
 
 function Feed() {
   return (
@@ -53,8 +52,24 @@ function Feed() {
 function Notifications() {
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Notifications Screen</Text>
-      <MyMap/>
+      <Text style={{ justifyContent: "center", alignItems: "center" }}>
+        Notifications Screen
+      </Text>
+      <MyMap style={{ justifyContent: "center", alignItems: "center" }} />
+      <BottomDrawer containerHeight={100} offset={TAB_BAR_HEIGHT}>
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+          <Text>Get directions to your location</Text>
+        </View>
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+          <Text>Get directions to your location</Text>
+        </View>
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+          <Text>Get directions to your location</Text>
+        </View>
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+          <Text>Get directions to your location</Text>
+        </View>
+      </BottomDrawer>
     </View>
   );
 }
