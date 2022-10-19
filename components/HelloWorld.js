@@ -4,11 +4,11 @@ import { View, Text } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import MyMap from "./Mapview";
-import { SafeAreaView, StyleSheet, Image, Linking } from "react-native";
+import { SafeAreaView, StyleSheet, Image, Linking,ScrollView } from "react-native";
 import BottomDrawer from "react-native-bottom-drawer-view";
-import BottomSheet from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import {useState} from "react";
-
+import Card from "./cardView"
 
 const TAB_BAR_HEIGHT = 1000;
 
@@ -80,6 +80,15 @@ const handleSheetChanges = useCallback((index) => {
         <View style={sheetStyle.contentContainer}>
           <Text>{places.length} National trust locations in this area 🎉</Text>
         </View>
+        <BottomSheetScrollView contentContainerStyle={sheetStyle.ScrollView}>
+          <Card>
+          <Text>asd</Text>
+          </Card>
+          <Card>
+          <Text>asd</Text>
+          </Card>
+        </BottomSheetScrollView>
+          
       </BottomSheet>
     </View>
   );
@@ -88,12 +97,16 @@ const handleSheetChanges = useCallback((index) => {
 const sheetStyle = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 24,
+    padding: 1,
     backgroundColor: 'grey',
   },
   contentContainer: {
-    flex: 1,
+    flex: 0.15,
     alignItems: 'center',
+  },
+  ScrollView: {
+    alignItems: 'center',
+    
   },
 });
 
