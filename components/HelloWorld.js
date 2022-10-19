@@ -1,10 +1,14 @@
 import * as React from "react";
+import { useCallback, useMemo, useRef } from 'react';
 import { View, Text } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import MyMap from "./Mapview";
 import { SafeAreaView, StyleSheet, Image, Linking } from "react-native";
 import BottomDrawer from "react-native-bottom-drawer-view";
+import BottomSheet from '@gorhom/bottom-sheet';
+import {useState} from "react";
+
 
 const TAB_BAR_HEIGHT = 1000;
 
@@ -49,30 +53,49 @@ function Feed() {
   );
 }
 
+
+
+
 function Notifications() {
+  const [places, setVisiblePlaces] = useState([]);
+  const bottomSheetRef = useRef(null);
+
+// variables
+const snapPoints = useMemo(() => ['25%', '50%'], []);
+
+// callbacks
+const handleSheetChanges = useCallback((index) => {
+  console.log('handleSheetChanges', index);
+}, []);
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text style={{ justifyContent: "center", alignItems: "center" }}>
-        Notifications Screen
-      </Text>
-      <MyMap style={{ justifyContent: "center", alignItems: "center" }} />
-      <BottomDrawer containerHeight={100} offset={TAB_BAR_HEIGHT}>
-        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-          <Text>Get directions to your location</Text>
+
+      <MyMap style={{ flex: 1, justifyContent: "center", alignItems: "center" }} setPlaces={setVisiblePlaces}/>
+      <BottomSheet
+        ref={bottomSheetRef}
+        index={1}
+        snapPoints={snapPoints}
+        onChange={handleSheetChanges}
+      >
+        <View style={sheetStyle.contentContainer}>
+          <Text>{places.length} National trust locations in this area 🎉</Text>
         </View>
-        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-          <Text>Get directions to your location</Text>
-        </View>
-        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-          <Text>Get directions to your location</Text>
-        </View>
-        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-          <Text>Get directions to your location</Text>
-        </View>
-      </BottomDrawer>
+      </BottomSheet>
     </View>
   );
 }
+
+const sheetStyle = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 24,
+    backgroundColor: 'grey',
+  },
+  contentContainer: {
+    flex: 1,
+    alignItems: 'center',
+  },
+});
 
 function Profile() {
   return (

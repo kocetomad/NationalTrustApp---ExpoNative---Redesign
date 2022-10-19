@@ -5,11 +5,13 @@ import { StyleSheet, Text, View, Dimensions, Platform, Alert } from "react-nativ
 import { Marker } from "react-native-maps";
 import { Component } from "react";
 import * as Location from "expo-location";
+import * as Util from "./Util";
 
-export default function MyMap() {
+export default function MyMap({setPlaces}) {
   const [state, setData] = useState(null);
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
+  const mapMarkers = [];
 
 
   //FETCHING ALL NATIONAL TRUST LOCATIONS
@@ -73,9 +75,26 @@ export default function MyMap() {
     );
   };
 
+  onRegionChange = (region) => {
+    // this.setState({ region });
+    console.log("fire",Util.getBoundByRegion(region))
+  }
+  onRegionChangeComplete = (region) => {
+    // this.setState({ region });
+    let boundry = Util.getBoundByRegion(region);
+    console.log("complete",Util.getBoundByRegion(region))
+    var newArray = mapMarkers.filter(function (el) {
+      return el.location.latitude <= boundry.maxLat &&
+      el.location.latitude >= boundry.minLat &&
+      el.location.longitude <= boundry.maxLng &&
+      el.location.longitude >= boundry.minLng;
+    });
+    setPlaces(newArray);
+    console.log("filtered",newArray.length)
+  }
+
   const MapMarkers = () => {
     //console.log("state ", state)
-    const mapMarkers = [];
 
     for (let obj in state) {
       mapMarkers.push(state[obj]);
@@ -100,6 +119,8 @@ export default function MyMap() {
     <View style={styles.container}>
       <MapView
         style={styles.map}
+        onRegionChange={onRegionChange}
+        onRegionChangeComplete = {onRegionChangeComplete}
         initialRegion={{
           latitude: 37.78825,
           longitude: -122.4324,
@@ -108,7 +129,7 @@ export default function MyMap() {
         }}
       >
         <MapMarkers />
-        <UserMarker/>
+        {/* <UserMarker/> */}
       </MapView>
     </View>
   );
