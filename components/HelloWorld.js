@@ -1,14 +1,12 @@
 import * as React from "react";
 import { useCallback, useMemo, useRef } from 'react';
 import { View, Text } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import MyMap from "./Mapview";
 import { SafeAreaView, StyleSheet, Image, Linking,ScrollView } from "react-native";
-import BottomDrawer from "react-native-bottom-drawer-view";
 import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import {useState} from "react";
-import Card from "./cardView"
+import Card from "./CardView"
 
 const TAB_BAR_HEIGHT = 1000;
 
@@ -56,7 +54,7 @@ function Feed() {
 
 
 
-function Notifications() {
+export default function Notifications() {
   const [places, setVisiblePlaces] = useState([]);
   const bottomSheetRef = useRef(null);
 
@@ -72,7 +70,7 @@ const handleSheetChanges = useCallback((index) => {
 
       <MyMap style={{ flex: 1, justifyContent: "center", alignItems: "center" }} setPlaces={setVisiblePlaces}/>
       <BottomSheet
-        ref={bottomSheetRef}
+        ref={bottomSheetRef}setPlaces
         index={1}
         snapPoints={snapPoints}
         onChange={handleSheetChanges}
@@ -147,4 +145,3 @@ function MyDrawer() {
     </Drawer.Navigator>
   );
 }
-export default MyDrawer;

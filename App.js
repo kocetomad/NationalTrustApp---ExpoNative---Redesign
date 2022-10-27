@@ -1,14 +1,18 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import MyDrawer from "./components/HelloWorld";
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import TabNav from "./components/TabNavigator";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 export default function App() {
   console.log("App Launched");
   return (
-    <NavigationContainer>
-      <MyDrawer />
-    </NavigationContainer>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <TabNav />
+    </GestureHandlerRootView>
   );
 }
 const styles = StyleSheet.create({
