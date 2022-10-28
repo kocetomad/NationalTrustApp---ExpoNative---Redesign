@@ -18,15 +18,7 @@ const BottomSheetMain = ({setPlaces,places}) => {
   const MapScopedLocs = ({locs}) => {
     //console.log("state ", state)
     return locs.map((loc) => (
-      <Card
-        // key={loc.id}
-        // coordinate={{
-        //   latitude: loc.location.latitude,
-        //   longitude: loc.location.longitude,
-        // }}
-        // title={loc.title}
-        // description={loc.description}
-      ></Card>
+      <Card location={loc}></Card>
     ));
   };
   return (

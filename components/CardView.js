@@ -1,16 +1,39 @@
 import React from "react";
+import { CSVToArray } from "./Util";
+import Badge from "./Badge";
 import { View, StyleSheet, Image, Text } from "react-native";
-const Card = (props, { title, image, desc }) => {
+const Card = ({ location }) => {
+  const MappedBAdges = ({allTags}) => {
+    //console.log("state ", state)
+    return allTags.map((tag) => (
+      <Badge name={tag}></Badge>
+    ));
+  };
+
   return (
-    <View style={{ ...styles.card, ...props.style }}>
+    <View style={{ ...styles.card }}>
       <Image
         style={styles.tinyLogo}
         source={{
-          uri: "https://reactnative.dev/img/tiny_logo.png",
+          uri: location.imageUrl,
         }}
       />
-      <Text style= {{flex:1,justifyContent:"flex-start"}} >Title</Text>
-      <Text style= {{flex:1}} >desc</Text>
+      <Text
+        style={{
+          flex: 1,
+          justifyContent: "flex-start",
+          fontWeight: "bold",
+          fontSize: 30,
+          marginHorizontal: 5,
+          flexDirection: "row"
+        }}
+      >
+        {location.title}
+      </Text>
+      <Text style={{ marginHorizontal: 5,flexDirection: "row" }}>{location.imageDescription}</Text>
+      <View style={{ flexDirection: "row", marginHorizontal: 5, flexWrap: "wrap" }}>
+      <MappedBAdges allTags={location.activityTagsAsCsv ? location.activityTagsAsCsv.split(", ") : []}/>
+      </View>
     </View>
   );
 };
@@ -24,17 +47,15 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 10,
     marginBottom: 10,
-    height: 300,
+    height: "auto",
     width: "90%",
     backgroundColor: "#f18484",
     justifyContent: "center", //Centered vertically
   },
   tinyLogo: {
-    flex: 3,
-    width: 50,
+    height: 200,
     borderTopLeftRadius: 10,
-    borderTopRightRadius: 10
-
+    borderTopRightRadius: 10,
   },
 });
 export default Card;

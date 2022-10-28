@@ -1,10 +1,7 @@
-import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import * as React from "react";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { StyleSheet } from "react-native";
-import Card from "../CardView";
 import MyMap from "../Mapview";
-import Notifications from "../HelloWorld";
 import { View, Text } from "react-native";
 import BottomSheetMain from "../BottomSheet";
 
