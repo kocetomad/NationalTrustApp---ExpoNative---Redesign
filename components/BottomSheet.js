@@ -25,7 +25,7 @@ const BottomSheetMain = ({setPlaces,places}) => {
       <BottomSheet
         ref={bottomSheetRef}
         setPlaces
-        index={1}
+        index={0}
         snapPoints={snapPoints}
         onChange={handleSheetChanges}
       >

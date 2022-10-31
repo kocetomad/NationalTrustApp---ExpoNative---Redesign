@@ -11,7 +11,6 @@ const Badge = ({ name }) => {
 const styles = StyleSheet.create({
   card: {
     shadowColor: "black",
-    shadowOffset: { width: 0, height: 0 },
     shadowRadius: 6,
     shadowOpacity: 0.40,
     padding:10,
@@ -28,12 +27,6 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
   },
-  text: {
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 6,
-    shadowOpacity: 0.26,
-    elevation: 8,
-    backgroundColor: "black",
-  },
+  
 });
 export default Badge;

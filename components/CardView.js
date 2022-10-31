@@ -1,39 +1,72 @@
 import React from "react";
 import { CSVToArray } from "./Util";
 import Badge from "./Badge";
-import { View, StyleSheet, Image, Text } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Image,
+  Text,
+  Pressable,
+  TouchableOpacity,
+  TouchableHighlight,
+  Animated,
+} from "react-native";
+import { Button } from "react-native-paper";
+import SelectedCardScreen from "./screens/SelectedCard";
+import { useNavigation } from "@react-navigation/native";
+
 const Card = ({ location }) => {
-  const MappedBAdges = ({allTags}) => {
+  const MappedBAdges = ({ allTags }) => {
     //console.log("state ", state)
-    return allTags.map((tag) => (
-      <Badge name={tag}></Badge>
-    ));
+    return allTags.map((tag) => <Badge name={tag}></Badge>);
   };
 
+  const navigation = useNavigation();
   return (
     <View style={{ ...styles.card }}>
-      <Image
-        style={styles.tinyLogo}
-        source={{
-          uri: location.imageUrl,
-        }}
-      />
-      <Text
-        style={{
-          flex: 1,
-          justifyContent: "flex-start",
-          fontWeight: "bold",
-          fontSize: 30,
-          marginHorizontal: 5,
-          flexDirection: "row"
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate("Location detials",{loc: location});
+          title = "Open Modal";
         }}
       >
-        {location.title}
-      </Text>
-      <Text style={{ marginHorizontal: 5,flexDirection: "row" }}>{location.imageDescription}</Text>
-      <View style={{ flexDirection: "row", marginHorizontal: 5, flexWrap: "wrap" }}>
-      <MappedBAdges allTags={location.activityTagsAsCsv ? location.activityTagsAsCsv.split(", ") : []}/>
-      </View>
+        <Image
+          style={styles.tinyLogo}
+          source={{
+            uri: location.imageUrl,
+          }}
+        />
+        <Text
+          style={{
+            flex: 1,
+            justifyContent: "flex-start",
+            fontWeight: "bold",
+            fontSize: 30,
+            marginHorizontal: 5,
+            flexDirection: "row",
+          }}
+        >
+          {location.title}
+        </Text>
+        <Text style={{ marginHorizontal: 5, flexDirection: "row" }}>
+          {location.imageDescription}
+        </Text>
+        <View
+          style={{
+            flexDirection: "row",
+            marginHorizontal: 5,
+            flexWrap: "wrap",
+          }}
+        >
+          <MappedBAdges
+            allTags={
+              location.activityTagsAsCsv
+                ? location.activityTagsAsCsv.split(", ")
+                : []
+            }
+          />
+        </View>
+      </TouchableOpacity>
     </View>
   );
 };

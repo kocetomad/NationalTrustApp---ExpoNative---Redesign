@@ -122,8 +122,8 @@ export default function MyMap({setPlaces}) {
         onRegionChange={onRegionChange}
         onRegionChangeComplete = {onRegionChangeComplete}
         initialRegion={{
-          latitude: 37.78825,
-          longitude: -122.4324,
+          latitude: 50.641718,
+          longitude: -3.408798,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
