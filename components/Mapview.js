@@ -7,7 +7,7 @@ import { Component } from "react";
 import * as Location from "expo-location";
 import * as Util from "./Util";
 
-export default function MyMap({setPlaces}) {
+export default function MyMap({setPlaces,setAllLocations}) {
   const [state, setData] = useState(null);
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
@@ -99,7 +99,7 @@ export default function MyMap({setPlaces}) {
     for (let obj in state) {
       mapMarkers.push(state[obj]);
     }
-
+    setAllLocations(mapMarkers)
     console.log("mapMarkers ", mapMarkers[0]);
 
     return mapMarkers.map((loc) => (
