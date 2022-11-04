@@ -7,8 +7,6 @@ import { Component } from "react";
 import * as Location from "expo-location";
 import * as Util from "./Util";
 
-const placesData = require('../assets/National Trust Assets/places.json');
-
 export default function MyMap({setPlaces,setAllLocations}) {
   const [state, setData] = useState(null);
   const [location, setLocation] = useState(null);
