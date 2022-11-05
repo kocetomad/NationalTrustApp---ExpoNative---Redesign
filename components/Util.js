@@ -61,3 +61,15 @@ export const getBoundByRegion = (region, scale = 1) => {
     });
     return formedArr;
   }
+
+  export function replaceAll(str, find, replace) {
+    return str.replace(new RegExp(find, 'g'), replace);
+  }
+
+  export function fixHtmlString(htmlString){
+    var plainString = htmlString.replace(/<[^>]+>/g, "");
+    plainString = replaceAll(plainString, "&#39;", "");
+    plainString = replaceAll(plainString, "&nbsp;", "");
+    plainString = replaceAll(plainString, "&rsquo;", "");
+    return plainString;
+  }

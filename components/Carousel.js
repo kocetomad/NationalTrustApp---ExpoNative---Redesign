@@ -1,11 +1,12 @@
 import * as React from "react";
 import { Dimensions, Text, View, Image } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
+//import images from "./_staticImageImports";
 
 function PlaceCarousel({ pics }) {
   const width = Dimensions.get("window").width;
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{}}>
       <Carousel
         loop
         width={width}
