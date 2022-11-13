@@ -1,24 +1,53 @@
 import * as React from "react";
 import { useCallback, useMemo, useRef, useState, useEffect } from "react";
-import { Dimensions, View, Text, Image,Button,ScrollView,Linking,Alert } from "react-native";
+import {
+  View,
+  Text,
+} from "react-native";
 import PlaceCarousel from "../Carousel";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import { compareAsc, format } from "date-fns";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 
-import RenderHtml from "react-native-render-html";
-import { useWindowDimensions } from "react-native";
+import { Details } from "../selectedCardScreens/Details";
+import { Admissions } from "../selectedCardScreens/Admissions";
+import { Location } from "../selectedCardScreens/Locations";
+import { WorkingTime } from "../selectedCardScreens/WorkingTime";
+
 const locationDetails = require("../../assets/places.json");
 const locationDirections = require("../../assets/directions.json");
 const locationPictures = require("../../assets/places_images.json");
-import { replaceAll, fixHtmlString } from "../Util";
-
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-
-import openMap from 'react-native-open-maps';
+const locationAdmissions = require("../../assets/admission_prices.json");
+const locationOppeningTimePattern = require("../../assets/opening_times_patterns.json");
+const locationOppeningTimeWeeks = require("../../assets/opening_times_weeks.json");
+const locationOppeningLabels = require("../../assets/opening_times_labels.json");
 
 const Tab = createMaterialTopTabNavigator();
-function TopTabNav({ details, directions }) {
-  
+function TopTabNav({ details, directions, admissions, workingTime }) {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+
+          if (route.name === "Details") {
+            iconName = focused
+              ? "ios-information-circle"
+              : "ios-information-circle-outline";
+          } else if (route.name === "Directions") {
+            iconName = focused ? "compass-outline" : "compass";
+          } else if (route.name === "Admissions") {
+            iconName = focused ? "cash-outline" : "cash";
+          } else if (route.name === "Working time") {
+            iconName = focused ? "alarm-outline" : "alarm";
+          }
+          return <Ionicons name={iconName} size={22} color={color} />;
+        },
+        tabBarLabelStyle: { fontSize: 12 },
+        tabBarActiveTintColor: "tomato",
+        tabBarInactiveTintColor: "gray",
+      })}
+    >
       <Tab.Screen
         name="Details"
         initialParams={{ details: details }}
@@ -29,75 +58,37 @@ function TopTabNav({ details, directions }) {
         initialParams={{ details: details, directions: directions }}
         component={Location}
       />
+      <Tab.Screen
+        name="Admissions"
+        initialParams={{
+          details: details,
+          directions: directions,
+          admissions: admissions,
+        }}
+        component={Admissions}
+      />
+      <Tab.Screen
+        name="Working time"
+        initialParams={{
+          details: details,
+          directions: directions,
+          admissions: admissions,
+          workingTime: workingTime
+
+        }}
+        component={WorkingTime}
+      />
     </Tab.Navigator>
   );
 }
 
-const Details = ({ route }) => {
-  const { details } = route.params;
-  var htmlString = details.description_html;
-  var plainString = fixHtmlString(htmlString);
-  return (
-    <View style={{ flex: 1 }}>
-      <Text>{plainString}</Text>
-    </View>
-  );
-};
-
-const Location = ({ route }) => {
-  const { details,directions } = route.params;
-
-  
-  const {
-    postal_address_country,
-    postal_address_county,
-    postal_address_lines,
-    postal_address_postcode,
-    postal_address_town,
-  } = details;
-  return (
-    <ScrollView style={{ flex: 1 }}>
-      <Text>{details.contact_email}</Text>
-      <Text>Full address: {postal_address_country}, {postal_address_county}, {postal_address_town}, {postal_address_lines}, {postal_address_postcode}</Text>
-      <Button title="Click To Open Maps 🗺" onPress={() => openMap({end: postal_address_postcode })}/>
-      <MapDirections directions={directions}/>
-    </ScrollView>
-  );
-};
-
-const OpenURLButton = ({ url, children }) => {
-  const handlePress = useCallback(async () => {
-    // Checking if the link is supported for links with custom URL scheme.
-    const supported = await Linking.canOpenURL(url);
-
-    if (supported) {
-      // Opening the link with some app, if the URL scheme is "http" the web link should be opened
-      // by some browser in the mobile
-      await Linking.openURL(url);
-    } else {
-      Alert.alert(`Don't know how to open this URL: ${url}`);
-    }
-  }, [url]);
-
-  return <Button title={children} onPress={handlePress} />;
-};
-
-
-const MapDirections = ({directions}) => {
-
-  return directions.map((dir) => (
-    <View style={{}}>
-      <Text>{dir.category}</Text>
-      {dir.description.length > 0 ? <Text>{dir.description}</Text> : ""}
-      {dir.category == "cycle" ? <OpenURLButton url={dir.cycle_route_url}>View cycling route</OpenURLButton> : ""}
-    </View>
-  ));
-};
-
-
 const SelectedCardScreen = ({ route, navigation }) => {
   const [placeDetails, setPlaceDetails] = useState([]);
   const { loc } = route.params;
+
+  const admissions = locationAdmissions.filter(function (el) {
+    return el.place_id == loc.id;
+  });
   const details = locationDetails.find((element) => element.id == loc.id);
   const directions = locationDirections.filter(function (el) {
     return el.place_id == loc.id;
@@ -108,11 +99,33 @@ const SelectedCardScreen = ({ route, navigation }) => {
   placesPics = placesPics.map(
     (pic) => "../assets/" + pic.image_id.substring(11) + ".jpg"
   );
+
+  const locOTWekks = locationOppeningTimeWeeks.filter(function (el) {
+    return el.place_id == loc.id;
+  });
+  var now = new Date();
+  const labelScheduleList = []
+
   useEffect(() => {
+    //finding the start of the current week as per the decompiled dataset format
+    const d = new Date("2022/05/30");
+    let day = d.getDay() - 1;
+    d.setDate(d.getDate() - day);
+    const locOTWekks = locationOppeningTimeWeeks.filter(function (el) {
+      return el.place_id == loc.id && el.week_start == format(d, "yyyyMMdd");
+    });
+    locOTWekks.forEach(element => {
+      let labelSchedulePair = {
+        label : locationOppeningLabels.find((ele) => ele.lid == element.label_id),
+        schedule : locationOppeningTimePattern.find((ele) => ele._id == element.pattern_id)
+      }
+      labelScheduleList.push(labelSchedulePair);
+    });
+    console.log("date of the week" + format(d, "yyyyMMdd"));
+    console.log(labelScheduleList);
+
     setPlaceDetails(placesPics);
   }, []);
-
-  //Striping all premade formatting
 
   return (
     <View style={{ flex: 1 }}>
@@ -131,7 +144,12 @@ const SelectedCardScreen = ({ route, navigation }) => {
       <Text>Abaout the place:</Text>
       <Text>{details.name}</Text>
       <Text>{placesPics[1]}</Text>
-      <TopTabNav details={details} directions={directions}/>
+      <TopTabNav
+        details={details}
+        directions={directions}
+        admissions={admissions}
+        workingTime={labelScheduleList}
+      />
     </View>
   );
 };

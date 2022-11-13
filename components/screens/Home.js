@@ -1,9 +1,10 @@
 import * as React from "react";
-import { useCallback, useMemo, useRef, useState,useEffect } from "react";
+import { useCallback, useMemo, useRef, useState, useEffect } from "react";
 import { StyleSheet } from "react-native";
 import MyMap from "../Mapview";
 import Search from "./Search";
 import SelectedCardScreen from "./SelectedCard";
+import LoadingModal from "../LoadingModal";
 import {
   View,
   Text,
@@ -11,20 +12,35 @@ import {
   TouchableOpacity,
   TextInput,
   Dimensions,
-  
 } from "react-native";
 import BottomSheetMain from "../BottomSheet";
 import { createStackNavigator } from "@react-navigation/stack";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
+import Badge from "../Badge";
 
 const Home = ({ route }) => {
   const [places, setVisiblePlaces] = useState([]);
+  const [loading, setLoading] = useState(true);
   const { setAllLocations } = route.params;
   return (
-    <View style={{ flex: 1 }}>
-      <MyMap setPlaces={setVisiblePlaces} setAllLocations={setAllLocations} />
-      <BottomSheetMain setPlaces={setVisiblePlaces} places={places} />
+    <View style={{ flex: 1,backgroundColor: 'red'}}>
+      
+      {/* <LoadingModal modalVisible={loading}/>  */}
+      
+      <MyMap
+        places={places}
+        setPlaces={setVisiblePlaces}
+        setAllLocations={setAllLocations}
+      />
+      
+      <BottomSheetMain
+        loading={loading}
+        setLoading={setLoading}
+        setPlaces={setVisiblePlaces}
+        places={places}
+      />
+      
     </View>
   );
 };
@@ -35,38 +51,34 @@ function HomeScreen() {
   //const Stack = createStackNavigator();
   const [textSearchbar, textSearchbarChanged] = React.useState("");
   const [allLocations, setAllLocations] = useState(null);
-  const [filteredLocations, setFilteredLocations] = useState(null);;
+  const [filteredLocations, setFilteredLocations] = useState(null);
 
   async function SearchbarUpdated(arr) {
     let newArray = arr.filter(function (el) {
-      return el.title.toLowerCase().includes(textSearchbar.toLowerCase())
+      return el.title.toLowerCase().includes(textSearchbar.toLowerCase());
     });
     return newArray;
-
-  };
+  }
   useEffect(() => {
-    setFilteredLocations(allLocations)
+    setFilteredLocations(allLocations);
   }, [allLocations]);
 
-
   useEffect(() => {
-    
     console.log(textSearchbar);
     SearchbarUpdated(allLocations)
-    .then((data) => setFilteredLocations(data))
-    .then(() => {
-      navigation.navigate("Search", { locs: filteredLocations });
-      console.log(filteredLocations.length)
-    }).catch(console.error);
-      
+      .then((data) => setFilteredLocations(data))
+      .then(() => {
+        navigation.navigate("Search", { locs: filteredLocations });
+        console.log(filteredLocations.length);
+      })
+      .catch(console.error);
   }, [textSearchbar]);
 
   return (
     <Stack.Navigator id="nav">
-      <Stack.Group id="mainGroup" screenOptions={{ presentation: "transparentModal" }}>
+      
         <Stack.Screen
           id="Home"
-
           name="Home"
           component={Home}
           initialParams={{ setAllLocations: setAllLocations }}
@@ -86,7 +98,6 @@ function HomeScreen() {
             ),
           }}
         />
-      </Stack.Group>
       <Stack.Group id="modalGroup" screenOptions={{ presentation: "card" }}>
         <Stack.Screen name="Location detials" component={SelectedCardScreen} />
         <Stack.Screen
@@ -105,8 +116,9 @@ function HomeScreen() {
             headerRight: () => (
               <TouchableOpacity
                 onPress={() => {
-                  navigation.
-                  navigation.navigate("Search", { locs: allLocations });
+                  navigation.navigation.navigate("Search", {
+                    locs: allLocations,
+                  });
                   console.log("press");
                 }}
                 style={{

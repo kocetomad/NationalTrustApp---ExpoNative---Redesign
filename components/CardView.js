@@ -17,7 +17,6 @@ import { useNavigation } from "@react-navigation/native";
 
 const Card = ({ location }) => {
   const MappedBAdges = ({ allTags }) => {
-    //console.log("state ", state)
     return allTags.map((tag) => <Badge name={tag}></Badge>);
   };
 
