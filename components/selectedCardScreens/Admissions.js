@@ -17,7 +17,9 @@ export const Admissions = ({ route }) => {
     var plainString = fixHtmlString(htmlString);
     return (
       <View style={{ flex: 1 }}>
+        <ScrollView>
         <MapAddmissions admissions={admissions} />
+        </ScrollView>
       </View>
     );
   };

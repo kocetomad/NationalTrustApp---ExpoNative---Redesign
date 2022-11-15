@@ -13,6 +13,7 @@ import { Details } from "../selectedCardScreens/Details";
 import { Admissions } from "../selectedCardScreens/Admissions";
 import { Location } from "../selectedCardScreens/Locations";
 import { WorkingTime } from "../selectedCardScreens/WorkingTime";
+import { useNavigation } from "@react-navigation/native";
 
 const locationDetails = require("../../assets/places.json");
 const locationDirections = require("../../assets/directions.json");
@@ -85,6 +86,7 @@ function TopTabNav({ details, directions, admissions, workingTime }) {
 const SelectedCardScreen = ({ route, navigation }) => {
   const [placeDetails, setPlaceDetails] = useState([]);
   const { loc } = route.params;
+  const nav = useNavigation();
 
   const admissions = locationAdmissions.filter(function (el) {
     return el.place_id == loc.id;
@@ -108,6 +110,8 @@ const SelectedCardScreen = ({ route, navigation }) => {
 
   useEffect(() => {
     //finding the start of the current week as per the decompiled dataset format
+
+    nav.setOptions({ title: loc.title })
     const d = new Date("2022/05/30");
     let day = d.getDay() - 1;
     d.setDate(d.getDate() - day);
@@ -121,29 +125,12 @@ const SelectedCardScreen = ({ route, navigation }) => {
       }
       labelScheduleList.push(labelSchedulePair);
     });
-    console.log("date of the week" + format(d, "yyyyMMdd"));
-    console.log(labelScheduleList);
-
     setPlaceDetails(placesPics);
   }, []);
 
   return (
     <View style={{ flex: 1 }}>
       <PlaceCarousel pics={placesPics} />
-      <Text
-        style={{
-          justifyContent: "flex-start",
-          fontWeight: "bold",
-          fontSize: 30,
-          marginHorizontal: 5,
-        }}
-      >
-        {loc.title}
-      </Text>
-
-      <Text>Abaout the place:</Text>
-      <Text>{details.name}</Text>
-      <Text>{placesPics[1]}</Text>
       <TopTabNav
         details={details}
         directions={directions}

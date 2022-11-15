@@ -10,37 +10,44 @@ import {
   Platform,
   Alert,
   Suspense,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 import { Marker, Polygon, Geojson } from "react-native-maps";
 import { Component } from "react";
 import * as Location from "expo-location";
 import * as Util from "./Util";
 import { MapGeoJson } from "./Util";
-import Badge from "./Badge";
+import SearchLocation from "./SearchLocation";
 
-export default function MyMap({places, setPlaces, setAllLocations }) {
-  const [state, setData] = useState([{
-    openingTimeStatus: "Open today",
-    cmsRegion: "RegionNorthernIreland",
-    imagePath:
-      "/images/1431915684674-ntdivismartyfennell-mfphotography061221.jpg",
-    id: "2546",
-    title: "Divis and the Black Mountain",
-    subTitle: "near Belfast, County Antrim",
-    description:
-      "Divis and the Black Mountain offers a spectacular viewpoint for walkers seeking panoramic views over Belfast and beyond",
-    imageUrl:
-      "https://nt.global.ssl.fastly.net/images/1431915684674-ntdivismartyfennell-mfphotography061221.jpg",
-    imageDescription: "Sunset over Divis and the Black Mountain",
-    alternativeImages: [],
-    websiteUrl: "https://www.nationaltrust.org.uk/divis-and-the-black-mountain",
-    type: "PLACE",
-    location: { latitude: 54.60074, longitude: -6.041651 },
-    activityTagsAsCsv: "Dog walking, Running, Walking",
-    displayable: true,
-  }]);
-  const [spinner, spinnerState] = useState(null);
+export default function MyMap({ places, setPlaces, setAllLocations }) {
+  const [state, setData] = useState([
+    {
+      openingTimeStatus: "Open today",
+      cmsRegion: "RegionNorthernIreland",
+      imagePath:
+        "/images/1431915684674-ntdivismartyfennell-mfphotography061221.jpg",
+      id: "2546",
+      title: "Divis and the Black Mountain",
+      subTitle: "near Belfast, County Antrim",
+      description:
+        "Divis and the Black Mountain offers a spectacular viewpoint for walkers seeking panoramic views over Belfast and beyond",
+      imageUrl:
+        "https://nt.global.ssl.fastly.net/images/1431915684674-ntdivismartyfennell-mfphotography061221.jpg",
+      imageDescription: "Sunset over Divis and the Black Mountain",
+      alternativeImages: [],
+      websiteUrl:
+        "https://www.nationaltrust.org.uk/divis-and-the-black-mountain",
+      type: "PLACE",
+      location: { latitude: 54.60074, longitude: -6.041651 },
+      activityTagsAsCsv: "Dog walking, Running, Walking",
+      displayable: true,
+    },
+  ]);
+  const [focusedRegion, setFocusedRegion] = useState({
+    zoom : null,
+    region: null,
+  });
+  const [loadingStatus, setLoadingStatus] = useState("loaded");
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const mapMarkers = [];
@@ -57,7 +64,6 @@ export default function MyMap({places, setPlaces, setAllLocations }) {
         //console.log("item 1", data["1"].location)
         setData(mapMarkers);
         setAllLocations(mapMarkers);
-
       })
       .catch(console.error);
   }, []);
@@ -112,43 +118,55 @@ export default function MyMap({places, setPlaces, setAllLocations }) {
   onRegionChange = (region) => {
     // this.setState({ region });
   };
-  // useEffect(() => {
-  //   console.log("done loading")
-  // }, [places]);
+
   onRegionChangeComplete = (region) => {
-    const windowWidth = Dimensions.get('window').width;
-    let zoom = Math.log2(360 * (windowWidth / 256 / region.longitudeDelta)) + 1
-    console.log(
-      zoom
-      );
-    // this.setState({ region });
-    if(zoom>10.1){
-      let boundry = Util.getBoundByRegion(region);
-      var newArray = state.filter(function (el) {
-      return (
-        el.location.latitude <= boundry.maxLat &&
-        el.location.latitude >= boundry.minLat &&
-        el.location.longitude <= boundry.maxLng &&
-        el.location.longitude >= boundry.minLng
-      );
-    });
-      setPlaces(newArray);
-    }else{
+    (async function () {
+    const windowWidth = Dimensions.get("window").width;
+    let zoom = Math.log2(360 * (windowWidth / 256 / region.longitudeDelta)) + 1;
+    console.log(zoom);
+    if (zoom > 10.1) {
+    } else {
       setPlaces(state.slice(0, 20));
     }
-    
-  
+    let reg = {
+      zoom : zoom,
+      region: region,
+    }
+    setFocusedRegion(reg);
+  })().then(() => {
+    setLoadingStatus("loaded");
+    console.log("finished loading");
+  });
+  };
+
+  const localSearchPress = (region) => {
+    // this.setState({ region });
+    setLoadingStatus("loading");
+
+    (async function () {
+      let boundry = Util.getBoundByRegion(region);
+      var newArray = state.filter(function (el) {
+        return (
+          el.location.latitude <= boundry.maxLat &&
+          el.location.latitude >= boundry.minLat &&
+          el.location.longitude <= boundry.maxLng &&
+          el.location.longitude >= boundry.minLng
+        );
+      });
+      setPlaces(newArray);
+    })().then(() => {
+      setLoadingStatus("loaded");
+      console.log("finished loading");
+    });
   };
 
   // const MapMarkers = () => {
   //   return(
-        
-    
+
   // };
 
   return (
     <View style={styles.container}>
-    
       <MapView
         style={styles.map}
         onRegionChangeComplete={onRegionChangeComplete}
@@ -175,9 +193,8 @@ export default function MyMap({places, setPlaces, setAllLocations }) {
         ))}
         {/* <UserMarker/> */}
       </MapView>
-      <TouchableOpacity style={styles.overlay}>
-        <Text style={{}}>Touchable Opacity</Text>
-      </TouchableOpacity>
+      <SearchLocation search={localSearchPress} region={focusedRegion.region} zoom={focusedRegion.zoom} loading={loadingStatus}></SearchLocation>
+      
     </View>
   );
 }
@@ -190,9 +207,19 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   overlay: {
-    position: 'absolute',
+    shadowColor: "black",
+    shadowRadius: 6,
+    shadowOpacity: 0.4,
+    padding: 10,
+    marginRight: 5,
+    elevation: 10,
+    borderRadius: 10,
+    borderColor: "black",
+    marginBottom: 10,
+    justifyContent: "center", //Centered vertically
+    position: "absolute",
     top: 20,
-    alignSelf: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 1)',
+    alignSelf: "center",
+    backgroundColor: "rgba(255, 255, 255, 1)",
   },
 });

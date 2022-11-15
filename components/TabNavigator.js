@@ -1,5 +1,5 @@
 import * as React from "react";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "./screens/Home";
@@ -9,11 +9,19 @@ import SelectedCardScreen from "./screens/SelectedCard";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 const Tab = createBottomTabNavigator();
-
+const MyTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: '#4F8EF7',
+    card: '#c5c1bc',
+    text: 'rgb(28, 28, 30)',
+  },
+};
 
 function TabNav() {
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={MyTheme}>
       <Tab.Navigator
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
