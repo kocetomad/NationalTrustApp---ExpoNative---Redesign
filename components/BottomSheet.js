@@ -16,12 +16,12 @@ const BottomSheetMain = ({ setPlaces, places, setLoading,loading }) => {
   }, []);
   useEffect(() => {
     (async function () {
-      var mapp = places.map((loc) => <Card location={loc}></Card>);
+      var mapp = places.map((loc,index) => <Card key={index} location={loc}></Card>);
       return mapp;
     })().then((mapp) => {
       setMapped(mapp);
       console.log("finished loading")
-    });
+    }).catch(console.error);
   
   }, [places]);
 
@@ -58,7 +58,7 @@ const sheetStyle = StyleSheet.create({
     backgroundColor: "grey",
   },
   contentContainer: {
-    flex: 0.15,
+    flex: 0.10,
     alignItems: "center",
   },
   ScrollView: {

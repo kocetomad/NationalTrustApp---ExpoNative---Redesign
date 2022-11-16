@@ -15,18 +15,21 @@ import { Button } from "react-native-paper";
 import SelectedCardScreen from "./screens/SelectedCard";
 import { useNavigation } from "@react-navigation/native";
 
+const locationDetails = require("../assets/places.json");
+
 const Card = ({ location }) => {
   const MappedBAdges = ({ allTags }) => {
-    return allTags.map((tag) => <Badge name={tag}></Badge>);
+    return allTags.map((tag) => <Badge key={tag} name={tag}></Badge>);
   };
+  const details = locationDetails.find((element) => element.id == location.id);
 
   const navigation = useNavigation();
   return (
-    <View style={{ ...styles.card }}>
+    <View key={location.id} style={{ ...styles.card }}>
       <TouchableOpacity
+      key={location.id}
         onPress={() => {
           navigation.navigate("Location detials",{loc: location});
-          title = "Open Modal";
         }}
       >
         <Image
@@ -43,17 +46,19 @@ const Card = ({ location }) => {
             fontSize: 30,
             marginHorizontal: 5,
             flexDirection: "row",
+            padding: 5,
           }}
         >
           {location.title}
         </Text>
-        <Text style={{ marginHorizontal: 5, flexDirection: "row" }}>
-          {location.imageDescription}
+        <Text style={{ padding: 5,marginHorizontal: 5, flexDirection: "row" }}>
+          {details.description_strapline}
         </Text>
         <View
           style={{
             flexDirection: "row",
-            marginHorizontal: 5,
+            marginHorizontal: 10,
+            marginTop:10,
             flexWrap: "wrap",
           }}
         >
@@ -81,8 +86,10 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     height: "auto",
     width: "90%",
-    backgroundColor: "#f18484",
-    justifyContent: "center", //Centered vertically
+    backgroundColor: "white",
+    justifyContent: "center",
+    borderColor: "black",
+    borderWidth: 1, //Centered vertically
   },
   tinyLogo: {
     height: 200,

@@ -170,13 +170,17 @@ export const polygon = (loc) =>{
 }
 
 
-  export const MapGeoJson = () => {
+  export const MapGeoJson = ({zonesEnabled}) => {
     //console.log("state ", state)
-    return alwaysOpen.features.map((geo) => (
-      <Polygon
-    coordinates={ polygon(geo)} 
-    fillColor='rgba(30, 238, 23, 0.52)'/>
-    ));
+    if (zonesEnabled == true){
+      return alwaysOpen.features.map((geo) => (
+        <Polygon
+      coordinates={ polygon(geo)} 
+      fillColor='rgba(30, 238, 23, 0.52)'/>
+      ));
+    }else{
+      return ""
+    }
     // test = []
     // test1 = alwaysOpen.features.map((geo) => polygon(geo));
     // console.log(test1)

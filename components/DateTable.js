@@ -1,5 +1,5 @@
 import React, { Component, useEffect } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View,Dimensions, } from "react-native";
 import {
   Table,
   TableWrapper,
@@ -82,16 +82,17 @@ export const DateTable = ({ schedule }) => {
     ],
   };
 
+  const windowWidth = Dimensions.get("window").width;
 
   return (
-    <Table borderStyle={{ borderWidth: 1 }}>
+    <Table borderStyle={{}}>
       <Row
         data={date.tableHead}
         flexArr={[1, 2, 1, 1]}
-        style={styles.head}
+        style={{ height: 40, backgroundColor: "#f1f8ff", width: windowWidth - windowWidth * 0.15, alignSelf:"center", borderBottomWidth: 1 }}
         textStyle={styles.text}
       />
-      <TableWrapper style={styles.wrapper}>
+      <TableWrapper style={{flexDirection: "row",width: windowWidth - windowWidth * 0.15, alignSelf:"center"}}>
         <Col
           data={date.tableTitle}
           style={styles.title}
@@ -111,9 +112,9 @@ export const DateTable = ({ schedule }) => {
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: "#fff" },
-  head: { height: 40, backgroundColor: "#f1f8ff" },
+  head: { height: 40, backgroundColor: "#f1f8ff", },
   wrapper: { flexDirection: "row" },
-  title: { flex: 1, backgroundColor: "#f6f8fa" },
-  row: { height: 28 },
-  text: { textAlign: "center" },
+  title: { flex: 1, backgroundColor: "#f6f8fa", },
+  row: { height: 28,borderBottomWidth: 1 },
+  text: { textAlign: "center", fontSize:10 },
 });

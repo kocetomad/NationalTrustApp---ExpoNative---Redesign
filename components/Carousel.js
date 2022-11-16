@@ -22,11 +22,13 @@ function PlaceCarousel({ pics }) {
               justifyContent: "center",
             }}
           >
-            {/* <Image
+            <Image
               style={{ width: "100%", height: undefined, aspectRatio: 1 }}
-              source={require(pics[index])}
-            /> */}
-            <Text>{pics[index]}</Text>
+              source={{
+            uri: pics[index],
+          }}
+            />
+            {/* <Text>{pics[index]}</Text> */}
           </View>
         )}
       />

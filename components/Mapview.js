@@ -9,17 +9,21 @@ import {
   Dimensions,
   Platform,
   Alert,
+  Image,
   Suspense,
   TouchableOpacity,
 } from "react-native";
-import { Marker, Polygon, Geojson } from "react-native-maps";
+import { Marker, Polygon, Geojson, Callout } from "react-native-maps";
 import { Component } from "react";
 import * as Location from "expo-location";
 import * as Util from "./Util";
 import { MapGeoJson } from "./Util";
+import { useNavigation } from "@react-navigation/native";
 import SearchLocation from "./SearchLocation";
 
-export default function MyMap({ places, setPlaces, setAllLocations }) {
+const locs = require("../assets/all-places.json");
+
+export default function MyMap({ places, setPlaces, setAllLocations,settings }) {
   const [state, setData] = useState([
     {
       openingTimeStatus: "Open today",
@@ -44,50 +48,29 @@ export default function MyMap({ places, setPlaces, setAllLocations }) {
     },
   ]);
   const [focusedRegion, setFocusedRegion] = useState({
-    zoom : null,
+    zoom: null,
     region: null,
   });
   const [loadingStatus, setLoadingStatus] = useState("loaded");
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
-  const mapMarkers = [];
 
   //FETCHING ALL NATIONAL TRUST LOCATIONS
   useEffect(() => {
-    fetch("https://www.nationaltrust.org.uk/search/data/all-places")
-      .then((res) => res.json())
+    
+    (async () => {
+      const mapMarkers = [];
+      for (let obj in locs) {
+        mapMarkers.push(locs[obj]);
+      }
+      return mapMarkers;
+    })()
       .then((data) => {
-        for (let obj in data) {
-          mapMarkers.push(data[obj]);
-        }
-        //setPlaces(mapMarkers);
-        //console.log("item 1", data["1"].location)
-        setData(mapMarkers);
-        setAllLocations(mapMarkers);
+        setData(data);
+        setAllLocations(data);
       })
       .catch(console.error);
   }, []);
-
-  useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
-        return;
-      }
-
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
-    })();
-  }, []);
-
-  let text = "Waiting..";
-  if (errorMsg) {
-    createTwoButtonAlert();
-    text = errorMsg;
-  } else if (location) {
-    text = JSON.stringify(location);
-  }
 
   //Alert on user location fail
   const createTwoButtonAlert = () =>
@@ -100,43 +83,29 @@ export default function MyMap({ places, setPlaces, setAllLocations }) {
       { text: "OK", onPress: () => console.log("OK Pressed") },
     ]);
 
-  //User location pin
-  const UserMarker = () => {
-    return (
-      <Marker
-        coordinate={{
-          latitude: location.coords.latitude,
-          longitude: location.coords.longitude,
-        }}
-        image={require("../assets/user-pin.png")}
-        pinColor={"green"}
-        title={"Your location"}
-      ></Marker>
-    );
-  };
-
   onRegionChange = (region) => {
     // this.setState({ region });
   };
 
   onRegionChangeComplete = (region) => {
     (async function () {
-    const windowWidth = Dimensions.get("window").width;
-    let zoom = Math.log2(360 * (windowWidth / 256 / region.longitudeDelta)) + 1;
-    console.log(zoom);
-    if (zoom > 10.1) {
-    } else {
-      setPlaces(state.slice(0, 20));
-    }
-    let reg = {
-      zoom : zoom,
-      region: region,
-    }
-    setFocusedRegion(reg);
-  })().then(() => {
-    setLoadingStatus("loaded");
-    console.log("finished loading");
-  });
+      const windowWidth = Dimensions.get("window").width;
+      let zoom =
+        Math.log2(360 * (windowWidth / 256 / region.longitudeDelta)) + 1;
+      console.log(zoom);
+      if (zoom > 10.1) {
+      } else {
+        setPlaces(state.slice(0, 20));
+      }
+      let reg = {
+        zoom: zoom,
+        region: region,
+      };
+      setFocusedRegion(reg);
+    })().then(() => {
+      setLoadingStatus("loaded");
+      console.log("finished loading");
+    });
   };
 
   const localSearchPress = (region) => {
@@ -160,10 +129,7 @@ export default function MyMap({ places, setPlaces, setAllLocations }) {
     });
   };
 
-  // const MapMarkers = () => {
-  //   return(
-
-  // };
+  const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
@@ -176,12 +142,13 @@ export default function MyMap({ places, setPlaces, setAllLocations }) {
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
+        animationEnabled={false}
       >
-        <MapGeoJson />
-        {/* <MapMarkers/> */}
+        <MapGeoJson zonesEnabled={false}/>
         {state.map((loc) => (
           <Marker
             key={loc.id}
+            pinColor={"#3c775b"}
             tracksViewChanges={false}
             coordinate={{
               latitude: loc.location.latitude,
@@ -189,12 +156,37 @@ export default function MyMap({ places, setPlaces, setAllLocations }) {
             }}
             title={loc.title}
             description={loc.description}
-          ></Marker>
+          >
+            <Callout
+              tooltip
+              onPress={() =>
+                navigation.navigate("Location detials", { loc: loc })
+              }
+            >
+              
+              <View style={{flexDirection:"row",backgroundColor:"white", 
+              maxWidth:300,alignSelf:"center"}}>
+                <View style={{alignItems:"flex-start", }}>
+                <Text style={{backgroundColor:"#3c775b",width:"100%",padding:7, color:"white",fontSize:17}}>{loc.title}</Text>
+                <Text style={{padding:7}}>{loc.description}</Text>
+                </View>
+                
+                {/* <Text style={{}}>
+                
+                  
+                </Text> */}
+              </View>
+            </Callout>
+          </Marker>
         ))}
         {/* <UserMarker/> */}
       </MapView>
-      <SearchLocation search={localSearchPress} region={focusedRegion.region} zoom={focusedRegion.zoom} loading={loadingStatus}></SearchLocation>
-      
+      <SearchLocation
+        search={localSearchPress}
+        region={focusedRegion.region}
+        zoom={focusedRegion.zoom}
+        loading={loadingStatus}
+      ></SearchLocation>
     </View>
   );
 }
@@ -222,4 +214,5 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     backgroundColor: "rgba(255, 255, 255, 1)",
   },
+  
 });

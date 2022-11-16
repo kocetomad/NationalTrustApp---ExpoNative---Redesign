@@ -41,7 +41,7 @@ export const Location = ({ route }) => {
 
   const MapDirections = ({ directions }) => {
     return directions.map((dir) => (
-      <View style={styles.card}>
+      <View key={dir.category} style={styles.card}>
         <Text style={styles.title}>{dir.category.charAt(0).toUpperCase() + dir.category.slice(1)}:</Text>
         {dir.description.length > 0 ? <Text>{dir.description}</Text> : ""}
         {dir.category == "cycle" ? (

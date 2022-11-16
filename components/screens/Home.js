@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useCallback, useMemo, useRef, useState, useEffect } from "react";
+import { useCallback, useMemo, useRef, useState, useEffect,useLayoutEffect } from "react";
 import { StyleSheet } from "react-native";
 import MyMap from "../Mapview";
 import Search from "./Search";
@@ -17,18 +17,19 @@ import {
 import BottomSheetMain from "../BottomSheet";
 import { createStackNavigator } from "@react-navigation/stack";
 import Icon from "react-native-vector-icons/Ionicons";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation,getFocusedRouteNameFromRoute } from "@react-navigation/native";
 import Badge from "../Badge";
 
 const Home = ({ route }) => {
   const [places, setVisiblePlaces] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { setAllLocations } = route.params;
+  const { setAllLocations,settings } = route.params;
   return (
     <View style={{ flex: 1 }}>
       {/* <LoadingModal modalVisible={loading}/>  */}
 
       <MyMap
+        settings={settings}
         places={places}
         setPlaces={setVisiblePlaces}
         setAllLocations={setAllLocations}
@@ -44,19 +45,25 @@ const Home = ({ route }) => {
   );
 };
 
-function HomeScreen() {
+function HomeScreen({ route }) {
+  const { settings } = route.params;
+
   const Stack = createStackNavigator();
   const navigation = useNavigation();
   //const Stack = createStackNavigator();
-  const [textSearchbar, textSearchbarChanged] = React.useState("");
-  const [allLocations, setAllLocations] = useState(null);
+  const [textSearchbar, textSearchbarChanged] = useState("");
+  const [allLocations, setAllLocations] = useState([]);
   const [filteredLocations, setFilteredLocations] = useState(null);
 
   async function SearchbarUpdated(arr) {
-    let newArray = arr.filter(function (el) {
-      return el.title.toLowerCase().includes(textSearchbar.toLowerCase());
-    });
-    return newArray;
+    
+      let newArray = arr.filter(function (el) {
+        return el.title.toLowerCase().includes(textSearchbar.toLowerCase());
+      });
+      return newArray;
+    
+      
+    
   }
   useEffect(() => {
     setFilteredLocations(allLocations);
@@ -68,18 +75,26 @@ function HomeScreen() {
       .then((data) => setFilteredLocations(data))
       .then(() => {
         navigation.navigate("Search", { locs: filteredLocations });
-        console.log(filteredLocations.length);
       })
       .catch(console.error);
   }, [textSearchbar]);
 
+  useLayoutEffect(() => {
+    const routeName = getFocusedRouteNameFromRoute(route);
+    console.log("name: "+routeName)
+    if (routeName === "Location detials"){
+      navigation.setOptions({tabBarStyle: {display: 'none'}});
+    }else {
+      navigation.setOptions({tabBarStyle: {display:'flex'}});
+    }
+}, [navigation, route]);
   return (
     <Stack.Navigator id="nav">
       <Stack.Screen
         id="Home"
         name="Home"
         component={Home}
-        initialParams={{ setAllLocations: setAllLocations }}
+        initialParams={{ setAllLocations: setAllLocations, settings:settings }}
         options={{
           
           headerTitle: () => (
@@ -158,7 +173,7 @@ function HomeScreen() {
                   marginRight: 20,
                 }}
               >
-                <Icon name="search" size={25} color="#4F8EF7" />
+                <Icon name="search" size={25} color="#3c775b" />
               </TouchableOpacity>
             ),
           }}

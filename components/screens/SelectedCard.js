@@ -1,9 +1,6 @@
 import * as React from "react";
 import { useCallback, useMemo, useRef, useState, useEffect } from "react";
-import {
-  View,
-  Text,
-} from "react-native";
+import { View, Text } from "react-native";
 import PlaceCarousel from "../Carousel";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { compareAsc, format } from "date-fns";
@@ -44,8 +41,8 @@ function TopTabNav({ details, directions, admissions, workingTime }) {
           }
           return <Ionicons name={iconName} size={22} color={color} />;
         },
-        tabBarLabelStyle: { fontSize: 12 },
-        tabBarActiveTintColor: "tomato",
+        tabBarLabelStyle: { fontSize: 11 },
+        tabBarActiveTintColor: "#3c775b",
         tabBarInactiveTintColor: "gray",
       })}
     >
@@ -74,8 +71,7 @@ function TopTabNav({ details, directions, admissions, workingTime }) {
           details: details,
           directions: directions,
           admissions: admissions,
-          workingTime: workingTime
-
+          workingTime: workingTime,
         }}
         component={WorkingTime}
       />
@@ -98,31 +94,39 @@ const SelectedCardScreen = ({ route, navigation }) => {
   var placesPics = locationPictures.filter(function (el) {
     return el.place_id == loc.id;
   });
-  placesPics = placesPics.map(
-    (pic) => "../assets/" + pic.image_id.substring(11) + ".jpg"
-  );
+
+  placesPics = [
+    loc.imageUrl,
+    "https://www.sktthemes.org/wp-content/uploads/2019/10/watermark-images.jpg",
+    "https://thumbs.dreamstime.com/b/example-vector-stamp-icon-sample-watermark-rubber-stamp-example-vector-stamp-icon-sample-watermark-rubber-stamp-167589333.jpg",
+  ];
+  const pic = locationDetails.find((element) => element.id == loc.id);
 
   const locOTWekks = locationOppeningTimeWeeks.filter(function (el) {
     return el.place_id == loc.id;
   });
   var now = new Date();
-  const labelScheduleList = []
+  const labelScheduleList = [];
 
   useEffect(() => {
     //finding the start of the current week as per the decompiled dataset format
 
-    nav.setOptions({ title: loc.title })
+    nav.setOptions({ title: loc.title });
     const d = new Date("2022/05/30");
     let day = d.getDay() - 1;
     d.setDate(d.getDate() - day);
     const locOTWekks = locationOppeningTimeWeeks.filter(function (el) {
       return el.place_id == loc.id && el.week_start == format(d, "yyyyMMdd");
     });
-    locOTWekks.forEach(element => {
+    locOTWekks.forEach((element) => {
       let labelSchedulePair = {
-        label : locationOppeningLabels.find((ele) => ele.lid == element.label_id),
-        schedule : locationOppeningTimePattern.find((ele) => ele._id == element.pattern_id)
-      }
+        label: locationOppeningLabels.find(
+          (ele) => ele.lid == element.label_id
+        ),
+        schedule: locationOppeningTimePattern.find(
+          (ele) => ele._id == element.pattern_id
+        ),
+      };
       labelScheduleList.push(labelSchedulePair);
     });
     setPlaceDetails(placesPics);

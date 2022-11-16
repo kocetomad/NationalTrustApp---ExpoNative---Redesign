@@ -1,5 +1,5 @@
-import * as React from "react";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
+import React, { useState } from "react";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "./screens/Home";
@@ -20,29 +20,32 @@ const MyTheme = {
 };
 
 function TabNav() {
+  const [settings, setSettings] = useState(false);
+
   return (
     <NavigationContainer theme={MyTheme}>
       <Tab.Navigator
         screenOptions={({ route }) => ({
+
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
 
-            if (route.name === "Home") {
+            if (route.name === "Main") {
               iconName = focused
-                ? "ios-information-circle"
-                : "ios-information-circle-outline";
+                ? "map-sharp"
+                : "map-outline";
             } else if (route.name === "Settings") {
-              iconName = focused ? "ios-list-outline" : "ios-list";
+              iconName = focused ? "settings-sharp" : "settings-outline";
             }
             return <Ionicons name={iconName} size={size} color={color} />;
           },
-          tabBarActiveTintColor: "tomato",
+          tabBarActiveTintColor: "#3c775b",
           tabBarInactiveTintColor: "gray",
         })}
       >
         <Tab.Group>
-          <Tab.Screen name="Home" component={HomeScreen} options={{headerShown: false}}/>
-          <Tab.Screen name="Settings" component={Settings} />
+          <Tab.Screen name="Main" initialParams={{ settings:settings }} component={HomeScreen} options={{headerShown: false}}/>
+          <Tab.Screen name="Settings" initialParams={{ setSettings:setSettings }} component={Settings} />
         </Tab.Group>
       </Tab.Navigator>
     </NavigationContainer>

@@ -19,8 +19,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: "black",
     marginBottom: 10,
-    backgroundColor: "#f18484",
-    justifyContent: "center", //Centered vertically
+    backgroundColor: "white",
+    justifyContent: "center",
+    borderColor: "#3c775b",
+    borderWidth: 1, //Centered vertically
   },
   tinyLogo: {
     flex: 3,

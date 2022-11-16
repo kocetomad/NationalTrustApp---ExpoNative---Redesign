@@ -89,10 +89,15 @@ export const WorkingTime = ({ route }) => {
 const MapWorkingTime = ({ admissions, workingTime }) => {
     console.log("working time:")
     console.log(workingTime)
+    const windowWidth = Dimensions.get("window").width;
 
     return workingTime.map((wt) => (
-    <View style={{}}>
-      {wt.label ? <Text>{wt.label.label}</Text> : ""}
+    <View key={wt.label} style={{marginTop: 10,    elevation: 8,shadowColor: "black",
+    shadowRadius: 6,
+    shadowOpacity: 0.26,
+    
+    }}>
+      {wt.label ? <Text style={{alignSelf:"center", backgroundColor: "#3c775b",width: windowWidth - windowWidth * 0.15,borderTopLeftRadius: 10,borderTopRightRadius: 10, textAlign:"center",fontSize:20,paddingVertical:5,color: "white"}}>{wt.label.label}</Text> : ""}
       <DateTable schedule={wt.schedule} />
     </View>
   ));
