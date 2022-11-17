@@ -9,11 +9,10 @@ function PlaceCarousel({ pics }) {
       <Carousel
         loop
         width={width}
-        height={width*0.75}
+        height={width * 0.75}
         autoPlay={true}
         data={pics}
         scrollAnimationDuration={1000}
-        //onSnapToItem={(index) => console.log("current index:", index)}
         renderItem={({ index }) => (
           <View
             style={{
@@ -25,8 +24,8 @@ function PlaceCarousel({ pics }) {
             <Image
               style={{ width: "100%", height: undefined, aspectRatio: 1 }}
               source={{
-            uri: pics[index],
-          }}
+                uri: pics[index],
+              }}
             />
             {/* <Text>{pics[index]}</Text> */}
           </View>

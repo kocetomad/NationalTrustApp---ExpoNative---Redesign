@@ -27,9 +27,9 @@ const Card = ({ location }) => {
   return (
     <View key={location.id} style={{ ...styles.card }}>
       <TouchableOpacity
-      key={location.id}
+        key={location.id}
         onPress={() => {
-          navigation.navigate("Location detials",{loc: location});
+          navigation.navigate("Location detials", { loc: location });
         }}
       >
         <Image
@@ -51,14 +51,14 @@ const Card = ({ location }) => {
         >
           {location.title}
         </Text>
-        <Text style={{ padding: 5,marginHorizontal: 5, flexDirection: "row" }}>
+        <Text style={{ padding: 5, marginHorizontal: 5, flexDirection: "row" }}>
           {details.description_strapline}
         </Text>
         <View
           style={{
             flexDirection: "row",
             marginHorizontal: 10,
-            marginTop:10,
+            marginTop: 10,
             flexWrap: "wrap",
           }}
         >

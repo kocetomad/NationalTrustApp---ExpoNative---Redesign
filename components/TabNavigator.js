@@ -14,8 +14,8 @@ const MyTheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    primary: '#4F8EF7',
-    card: '#c5c1bc',
+    primary: "#4F8EF7",
+    card: "#white",
   },
 };
 
@@ -26,14 +26,11 @@ function TabNav() {
     <NavigationContainer theme={MyTheme}>
       <Tab.Navigator
         screenOptions={({ route }) => ({
-
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
 
             if (route.name === "Discover") {
-              iconName = focused
-                ? "map-sharp"
-                : "map-outline";
+              iconName = focused ? "map-sharp" : "map-outline";
             } else if (route.name === "Settings") {
               iconName = focused ? "settings-sharp" : "settings-outline";
             }
@@ -41,12 +38,17 @@ function TabNav() {
           },
           tabBarActiveTintColor: "#3c775b",
           tabBarInactiveTintColor: "gray",
-          tabBarLabelStyle: { fontSize: 13,fontWeight:"bold" },
-
+          tabBarInactiveBackgroundColor: "white",
+          tabBarActiveBackgroundColor: "white",
+          tabBarLabelStyle: { fontSize: 13, fontWeight: "bold" },
         })}
       >
         <Tab.Group>
-          <Tab.Screen name="Discover" component={HomeScreen} options={{headerShown: false}}/>
+          <Tab.Screen
+            name="Discover"
+            component={HomeScreen}
+            options={{ headerShown: false }}
+          />
           <Tab.Screen name="Settings" component={Settings} />
         </Tab.Group>
       </Tab.Navigator>

@@ -105,7 +105,6 @@ export default function MyMap({
       const windowWidth = Dimensions.get("window").width;
       let zoom =
         Math.log2(360 * (windowWidth / 256 / region.longitudeDelta)) + 1;
-      console.log(zoom);
       if (zoom > 10.1) {
         
       } else {
@@ -119,7 +118,6 @@ export default function MyMap({
       setFocusedRegion(reg);
     })().then(() => {
       setLoadingStatus("loaded");
-      console.log("finished loading");
     });
   };
 
@@ -142,8 +140,6 @@ export default function MyMap({
     })().then((newArray) => {
       setLoadingStatus("loaded");
       setBottomSheetState({text: newArray.length + " National trust locations in the filtered area 🎉" })
-
-      console.log("finished loading");
     });
   };
 

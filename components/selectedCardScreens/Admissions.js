@@ -30,8 +30,16 @@ const MapAddmissions = ({ admissions }) => {
       <Text style={styles.title}>
         {add.name} - {add.category}
       </Text>
-      <Text style={{ fontSize: 20, paddingHorizontal:10,paddingBottom:10 }}>
-        Standard price: {add.standard_amount.toString().length < 4 ? add.standard_amount.toString().substring(0, 1) + "." + add.standard_amount.toString().substring(1): add.standard_amount.toString().substring(0, 2) + "." + add.standard_amount.toString().substring(2)} {add.standard_currency}
+      <Text style={{ fontSize: 20, paddingHorizontal: 10, paddingBottom: 10 }}>
+        Standard price:{" "}
+        {add.standard_amount.toString().length < 4
+          ? add.standard_amount.toString().substring(0, 1) +
+            "." +
+            add.standard_amount.toString().substring(1)
+          : add.standard_amount.toString().substring(0, 2) +
+            "." +
+            add.standard_amount.toString().substring(2)}{" "}
+        {add.standard_currency}
       </Text>
       {add.gift_aid_currency.length > 0 ? (
         <Text>

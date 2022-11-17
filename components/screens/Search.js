@@ -18,40 +18,34 @@ const MappedBAdges = ({ allTags }) => {
   return allTags.map((tag) =>
     tag == "Cycling" ? (
       <View key={tag} style={styles.card}>
-      <Text key={tag} style={{ fontSize: 18 }}>
-        Cycling🚴
-      </Text>
+        <Text key={tag} style={{ fontSize: 18 }}>
+          Cycling🚴
+        </Text>
       </View>
     ) : tag == "Walking" ? (
       <View key={tag} style={styles.card}>
-
-      <Text key={tag} style={{ fontSize: 18 }}>
-        Walking🚶
-      </Text>
+        <Text key={tag} style={{ fontSize: 18 }}>
+          Walking🚶
+        </Text>
       </View>
-
     ) : tag == "Surfing" ? (
       <View key={tag} style={styles.card}>
-
-      <Text key={tag} style={{ fontSize: 18 }}>
-        Surfing🏄
-      </Text>
+        <Text key={tag} style={{ fontSize: 18 }}>
+          Surfing🏄
+        </Text>
       </View>
-
     ) : tag == "Horse riding" ? (
       <View key={tag} style={styles.card}>
-
-      <Text key={tag} style={{ fontSize: 18 }}>
-        Horse riding🏇
-      </Text>
+        <Text key={tag} style={{ fontSize: 18 }}>
+          Horse riding🏇
+        </Text>
       </View>
-
     ) : (
       <View key={tag} style={styles.card}>
-
-      <Text key={tag} style={{ fontSize: 18 }}>{tag}</Text>
+        <Text key={tag} style={{ fontSize: 18 }}>
+          {tag}
+        </Text>
       </View>
-
     )
   );
 };
@@ -59,7 +53,7 @@ const MappedBAdges = ({ allTags }) => {
 const Item = ({ title, allTags }) => (
   <View style={styles.item}>
     <Text style={styles.title}>{title}</Text>
-    <View style={{ flexDirection: "row", flexWrap:"wrap" }}>
+    <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
       {allTags.length > 0 ? "" : ""}
       <MappedBAdges allTags={allTags} />
     </View>
@@ -150,8 +144,8 @@ const styles = StyleSheet.create({
   card: {
     shadowColor: "black",
     shadowRadius: 6,
-    shadowOpacity: 0.40,
-    padding:5,
+    shadowOpacity: 0.4,
+    padding: 5,
     marginRight: 5,
     elevation: 10,
     borderRadius: 10,

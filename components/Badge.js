@@ -12,8 +12,8 @@ const styles = StyleSheet.create({
   card: {
     shadowColor: "black",
     shadowRadius: 6,
-    shadowOpacity: 0.40,
-    padding:10,
+    shadowOpacity: 0.4,
+    padding: 10,
     marginRight: 5,
     elevation: 10,
     borderRadius: 10,
@@ -29,6 +29,5 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
   },
-  
 });
 export default Badge;

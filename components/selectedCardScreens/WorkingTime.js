@@ -45,9 +45,10 @@ export const WorkingTime = ({ route }) => {
       week.substring(6, 8)
   );
   workingWeeks = [...new Set(workingWeeks)];
-  const [labelSchedule, setLabelSchedule] = useState(getLabelSchdulePair(new Date(), details.id, false));
+  const [labelSchedule, setLabelSchedule] = useState(
+    getLabelSchdulePair(new Date(), details.id, false)
+  );
 
-  console.log("working weeks" + workingWeeks);
 
   return (
     <ScrollView style={{ flex: 1 }}>
@@ -56,7 +57,11 @@ export const WorkingTime = ({ route }) => {
         // defaultValueByIndex={1}
         // defaultValue={'England'}
         onSelect={(selectedItem, index) => {
-          getLabelSchdulePair(new Date(selectedItem), details.id, setLabelSchedule);
+          getLabelSchdulePair(
+            new Date(selectedItem),
+            details.id,
+            setLabelSchedule
+          );
         }}
         defaultButtonText={"Select a working week"}
         buttonTextAfterSelection={(selectedItem, index) => {
@@ -87,17 +92,38 @@ export const WorkingTime = ({ route }) => {
 };
 
 const MapWorkingTime = ({ admissions, workingTime }) => {
-    console.log("working time:")
-    console.log(workingTime)
-    const windowWidth = Dimensions.get("window").width;
+  const windowWidth = Dimensions.get("window").width;
 
-    return workingTime.map((wt) => (
-    <View key={wt.label} style={{marginTop: 10,    elevation: 8,shadowColor: "black",
-    shadowRadius: 6,
-    shadowOpacity: 0.26,
-    
-    }}>
-      {wt.label ? <Text style={{alignSelf:"center", backgroundColor: "#3c775b",width: windowWidth - windowWidth * 0.15,borderTopLeftRadius: 10,borderTopRightRadius: 10, textAlign:"center",fontSize:20,paddingVertical:5,color: "white"}}>{wt.label.label}</Text> : ""}
+  return workingTime.map((wt) => (
+    <View
+      key={wt.label}
+      style={{
+        marginTop: 10,
+        elevation: 8,
+        shadowColor: "black",
+        shadowRadius: 6,
+        shadowOpacity: 0.26,
+      }}
+    >
+      {wt.label ? (
+        <Text
+          style={{
+            alignSelf: "center",
+            backgroundColor: "#3c775b",
+            width: windowWidth - windowWidth * 0.15,
+            borderTopLeftRadius: 10,
+            borderTopRightRadius: 10,
+            textAlign: "center",
+            fontSize: 20,
+            paddingVertical: 5,
+            color: "white",
+          }}
+        >
+          {wt.label.label}
+        </Text>
+      ) : (
+        ""
+      )}
       <DateTable schedule={wt.schedule} />
     </View>
   ));
@@ -118,9 +144,9 @@ function getLabelSchdulePair(date, id, setLabelSchedule) {
     };
     labelScheduleList.push(labelSchedulePair);
   });
-  if (setLabelSchedule==false){
+  if (setLabelSchedule == false) {
     return labelScheduleList;
-  } else{
+  } else {
     setLabelSchedule(labelScheduleList);
   }
 }

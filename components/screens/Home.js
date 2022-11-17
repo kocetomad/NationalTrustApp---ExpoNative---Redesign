@@ -1,14 +1,16 @@
 import * as React from "react";
-import { useCallback, useMemo, useRef, useState, useEffect,useLayoutEffect } from "react";
+import {
+  useState,
+  useEffect,
+  useLayoutEffect,
+} from "react";
 import { StyleSheet } from "react-native";
 import MyMap from "../Mapview";
 import Search from "./Search";
 import SelectedCardScreen from "./SelectedCard";
-import LoadingModal from "../LoadingModal";
 import {
   View,
   Text,
-  Button,
   TouchableOpacity,
   TextInput,
   Dimensions,
@@ -17,25 +19,42 @@ import {
 import BottomSheetMain from "../BottomSheet";
 import { createStackNavigator } from "@react-navigation/stack";
 import Icon from "react-native-vector-icons/Ionicons";
-import { useNavigation,getFocusedRouteNameFromRoute } from "@react-navigation/native";
-import Badge from "../Badge";
+import {
+  useNavigation,
+  getFocusedRouteNameFromRoute,
+} from "@react-navigation/native";
 
 const Home = ({ route }) => {
   const [places, setVisiblePlaces] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [bottomSheetState, setBottomSheetState] = useState({text:"-"});
+  const [bottomSheetState, setBottomSheetState] = useState({ text: "-" });
 
   const { setAllLocations, settings } = route.params;
 
   return (
     <View style={{ flex: 1 }}>
-      {settings ? <Text style={{alignSelf:"center", backgroundColor:"#3c775b", width:"100%",textAlign:"center", padding:2, color: "white"}}>Always Open zones enabled</Text> : ""}
+      {settings ? (
+        <Text
+          style={{
+            alignSelf: "center",
+            backgroundColor: "#3c775b",
+            width: "100%",
+            textAlign: "center",
+            padding: 2,
+            color: "white",
+          }}
+        >
+          Always Open zones enabled
+        </Text>
+      ) : (
+        ""
+      )}
       <MyMap
         settings={settings}
         places={places}
         setPlaces={setVisiblePlaces}
         setAllLocations={setAllLocations}
-        setBottomSheetState = {setBottomSheetState}
+        setBottomSheetState={setBottomSheetState}
       />
 
       <BottomSheetMain
@@ -51,7 +70,6 @@ const Home = ({ route }) => {
 let skipInitial = 0;
 
 function HomeScreen({ route }) {
-
   const Stack = createStackNavigator();
   const navigation = useNavigation();
   //const Stack = createStackNavigator();
@@ -60,63 +78,52 @@ function HomeScreen({ route }) {
   const [filteredLocations, setFilteredLocations] = useState(null);
 
   async function SearchbarUpdated(arr) {
-    
-      let newArray = arr.filter(function (el) {
-        return el.title.toLowerCase().includes(textSearchbar.toLowerCase());
-      });
-      return newArray;
-    
-      
-    
+    let newArray = arr.filter(function (el) {
+      return el.title.toLowerCase().includes(textSearchbar.toLowerCase());
+    });
+    return newArray;
   }
   useEffect(() => {
     setFilteredLocations(allLocations);
   }, [allLocations]);
 
   useEffect(() => {
-    console.log(textSearchbar);
     SearchbarUpdated(allLocations)
       .then((data) => setFilteredLocations(data))
       .then(() => {
-        if(skipInitial!=0){
+        if (skipInitial != 0) {
           navigation.navigate("Search", { locs: filteredLocations });
         }
-          
-          skipInitial++;
-          console.log("init:"+skipInitial)
-        
+
+        skipInitial++;
+
         //
       })
-      .catch(console.error);
   }, [textSearchbar]);
 
   useLayoutEffect(() => {
     const routeName = getFocusedRouteNameFromRoute(route);
-    console.log("name: "+routeName)
-    if (routeName === "Location detials"){
-      navigation.setOptions({tabBarStyle: {display: 'none'}});
-    }else {
-      navigation.setOptions({tabBarStyle: {display:'flex'}});
+    if (routeName === "Location detials") {
+      navigation.setOptions({ tabBarStyle: { display: "none" } });
+    } else {
+      navigation.setOptions({ tabBarStyle: { display: "flex" } });
     }
-}, [navigation, route]);
+  }, [navigation, route]);
   return (
     <Stack.Navigator id="nav">
       <Stack.Screen
         id="Home"
         name="Home"
         component={Home}
-        initialParams={{ setAllLocations: setAllLocations,}}
+        initialParams={{ setAllLocations: setAllLocations }}
         options={{
-          
           headerTitle: () => (
             <TouchableOpacity
               onPress={() => {
                 navigation.navigate("Search", { locs: filteredLocations });
-                console.log("press");
               }}
               style={{
-                
-                alignSelf: "center"
+                alignSelf: "center",
               }}
             >
               <View style={sheetStyle.browse} placeholder="Where to?">
@@ -142,7 +149,6 @@ function HomeScreen({ route }) {
                     fontSize: 18,
                     color: "#3c775b",
                   }}
-
                 >
                   │
                 </Text>
@@ -178,7 +184,6 @@ function HomeScreen({ route }) {
                   navigation.navigation.navigate("Search", {
                     locs: allLocations,
                   });
-                  console.log("press");
                 }}
                 style={{
                   marginRight: 20,
@@ -214,7 +219,8 @@ const sheetStyle = StyleSheet.create({
   },
   browse: {
     width: windowWidth - 30,
-    borderWidth: 0,
+    borderWidth: 1,
+    borderColor: "#3c775b",
     height: 40,
     shadowRadius: 6,
     shadowOpacity: 0.26,
@@ -222,17 +228,14 @@ const sheetStyle = StyleSheet.create({
     borderRadius: 15,
     shadowColor: "black",
     backgroundColor: "white",
-
   },
   tinyLogo: {
     width: 30,
     height: 30,
     position: "absolute",
-                    left: 8,
-                    top: 5,
-                    borderRightWidth:1,
-      
-                    
+    left: 8,
+    top: 5,
+    borderRightWidth: 1,
   },
 });
 export default HomeScreen;

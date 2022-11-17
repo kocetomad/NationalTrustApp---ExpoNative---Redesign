@@ -19,7 +19,6 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import openMap from "react-native-open-maps";
 import { Marker, Polygon } from "react-native-maps";
 
-
 export const getBoundByRegion = (region, scale = 1) => {
   /*
    * Latitude : max/min +90 to -90
@@ -158,30 +157,28 @@ const geoJSON = {
 };
 const alwaysOpen = require("../assets/National_Trust_Open_Data _Land_-_Always_Open.json");
 
-export const polygon = (loc) =>{
-  let out=loc.geometry.coordinates[0][0].map((coordsArr) => {
-      let coords = {
-        latitude: coordsArr[1],
-        longitude: coordsArr[0],
-      };
-      return coords;
-    });
-    return out;
-}
+export const polygon = (loc) => {
+  let out = loc.geometry.coordinates[0][0].map((coordsArr) => {
+    let coords = {
+      latitude: coordsArr[1],
+      longitude: coordsArr[0],
+    };
+    return coords;
+  });
+  return out;
+};
 
+export const MapGeoJson = ({ zonesEnabled }) => {
+  if (zonesEnabled == true) {
+    return alwaysOpen.features.map((geo, index, array) => (
+      <Polygon
+        key={index}
+        coordinates={polygon(geo)}
+        fillColor="rgba(30, 238, 23, 0.52)"
+      />
+    ));
+  } else {
+    return "";
+  }
 
-  export const MapGeoJson = ({zonesEnabled}) => {
-    //console.log("state ", state)
-    if (zonesEnabled == true){
-      return alwaysOpen.features.map((geo,index, array) => (
-        <Polygon key={index}
-      coordinates={ polygon(geo)} 
-      fillColor='rgba(30, 238, 23, 0.52)'/>
-      ));
-    }else{
-      return ""
-    }
-    // test = []
-    // test1 = alwaysOpen.features.map((geo) => polygon(geo));
-    // console.log(test1)
-  };
+};

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useCallback, useMemo, useRef, useState, useEffect } from "react";
-import { View, Text,ScrollView } from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import PlaceCarousel from "../Carousel";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { compareAsc, format } from "date-fns";
@@ -41,10 +41,12 @@ function TopTabNav({ details, directions, admissions, workingTime }) {
           }
           return <Ionicons name={iconName} size={22} color={color} />;
         },
-        tabBarLabelStyle: { fontSize: 11,fontWeight:"bold" },
+        tabBarLabelStyle: { fontSize: 11, fontWeight: "bold" },
         tabBarActiveTintColor: "#3c775b",
         tabBarInactiveTintColor: "gray",
-        tabBarIndicatorStyle: {backgroundColor:"#3c775b"}
+        tabBarIndicatorContainerStyle: "white",
+        tabBarActiveBackgroundColor: "white",
+        tabBarIndicatorStyle: { backgroundColor: "#3c775b" },
       })}
     >
       <Tab.Screen
@@ -112,9 +114,12 @@ const SelectedCardScreen = ({ route, navigation }) => {
   useEffect(() => {
     //finding the start of the current week as per the decompiled dataset format
 
-    nav.setOptions({ title: loc.title ,headerTitleStyle: {
-      color: '#3c775b',
-    },});
+    nav.setOptions({
+      title: loc.title,
+      headerTitleStyle: {
+        color: "#3c775b",
+      },
+    });
     const d = new Date("2022/05/30");
     let day = d.getDay() - 1;
     d.setDate(d.getDate() - day);
@@ -136,7 +141,6 @@ const SelectedCardScreen = ({ route, navigation }) => {
   }, []);
 
   return (
-    
     <View style={{ flex: 1 }}>
       <PlaceCarousel pics={placesPics} />
       <TopTabNav

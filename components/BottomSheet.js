@@ -4,30 +4,41 @@ import * as React from "react";
 import { useCallback, useMemo, useRef, useState, useEffect } from "react";
 import Card from "./CardView";
 
-const BottomSheetMain = ({ setPlaces, places, setLoading,loading,bottomSheetState }) => {
+const BottomSheetMain = ({
+  setPlaces,
+  places,
+  setLoading,
+  loading,
+  bottomSheetState,
+}) => {
   const bottomSheetRef = useRef(null);
   const [mapped, setMapped] = useState([]);
   // variables
   const snapPoints = useMemo(() => ["9%", "100%"], []);
 
   useEffect(() => {
-    if(bottomSheetState.text.includes("National trust locations in the filtered area")){
-      bottomSheetRef.current.expand()
+    if (
+      bottomSheetState.text.includes(
+        "National trust locations in the filtered area"
+      )
+    ) {
+      bottomSheetRef.current.expand();
     }
   }, [bottomSheetState]);
-  
+
   const handleSheetChanges = useCallback((index) => {
-    console.log("handle sheet change");
   }, []);
   useEffect(() => {
     (async function () {
-      var mapp = places.map((loc,index) => <Card key={index} location={loc}></Card>);
+      var mapp = places.map((loc, index) => (
+        <Card key={index} location={loc}></Card>
+      ));
       return mapp;
-    })().then((mapp) => {
-      setMapped(mapp);
-      console.log("finished loading")
-    }).catch(console.error);
-  
+    })()
+      .then((mapp) => {
+        setMapped(mapp);
+      })
+      .catch(console.error);
   }, [places]);
 
   // renders
@@ -35,7 +46,7 @@ const BottomSheetMain = ({ setPlaces, places, setLoading,loading,bottomSheetStat
     useEffect(() => {
       //setLoading(false);
     }, []);
-    return locs
+    return locs;
   };
 
   return (
@@ -63,7 +74,7 @@ const sheetStyle = StyleSheet.create({
     backgroundColor: "grey",
   },
   contentContainer: {
-    flex: 0.10,
+    flex: 0.1,
     alignItems: "center",
   },
   ScrollView: {

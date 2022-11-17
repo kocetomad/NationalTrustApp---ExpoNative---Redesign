@@ -34,7 +34,7 @@ export const Location = ({ route }) => {
           style={{ paddingHorizontal: 10, paddingBottom: 10, borderRadius: 10 }}
         >
           <Button
-          style={{ borderRadius: 10}}
+            style={{ borderRadius: 10 }}
             title="Click To Open Maps 🗺"
             onPress={() => openMap({ end: postal_address_postcode })}
           />
@@ -58,11 +58,11 @@ const MapDirections = ({ directions }) => {
       )}
       {dir.category == "cycle" ? (
         <View
-        style={{ paddingHorizontal: 10, paddingBottom: 10, borderRadius: 10 }}
-      >
-        <OpenURLButton url={dir.cycle_route_url}>
-          View cycling route
-        </OpenURLButton>
+          style={{ paddingHorizontal: 10, paddingBottom: 10, borderRadius: 10 }}
+        >
+          <OpenURLButton url={dir.cycle_route_url}>
+            View cycling route
+          </OpenURLButton>
         </View>
       ) : (
         ""
