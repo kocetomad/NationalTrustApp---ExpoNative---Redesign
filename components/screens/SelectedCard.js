@@ -21,6 +21,8 @@ const locationOppeningTimeWeeks = require("../../assets/opening_times_weeks.json
 const locationOppeningLabels = require("../../assets/opening_times_labels.json");
 
 const Tab = createMaterialTopTabNavigator();
+
+//Top tab nav for the details screen 
 function TopTabNav({ details, directions, admissions, workingTime }) {
   return (
     <Tab.Navigator
@@ -82,11 +84,13 @@ function TopTabNav({ details, directions, admissions, workingTime }) {
   );
 }
 
+//Defines the layout for the details screen for a selected location
 const SelectedCardScreen = ({ route, navigation }) => {
   const [placeDetails, setPlaceDetails] = useState([]);
   const { loc } = route.params;
   const nav = useNavigation();
 
+  //getting data from the decompiled dataset
   const admissions = locationAdmissions.filter(function (el) {
     return el.place_id == loc.id;
   });
@@ -113,7 +117,6 @@ const SelectedCardScreen = ({ route, navigation }) => {
 
   useEffect(() => {
     //finding the start of the current week as per the decompiled dataset format
-
     nav.setOptions({
       title: loc.title,
       headerTitleStyle: {

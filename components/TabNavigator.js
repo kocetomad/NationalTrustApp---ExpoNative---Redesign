@@ -19,6 +19,7 @@ const MyTheme = {
   },
 };
 
+//Wraps the Stack Nav for the Home screen
 function TabNav() {
   const [settings, setSettings] = useState("false");
 

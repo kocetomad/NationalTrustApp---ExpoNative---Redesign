@@ -16,6 +16,7 @@ const BottomSheetMain = ({
   // variables
   const snapPoints = useMemo(() => ["9%", "100%"], []);
 
+  //expands bottom sheet if area filter butto nis pressed 
   useEffect(() => {
     if (
       bottomSheetState.text.includes(
@@ -28,6 +29,7 @@ const BottomSheetMain = ({
 
   const handleSheetChanges = useCallback((index) => {
   }, []);
+  //Maps cardviews if filter area is pressed
   useEffect(() => {
     (async function () {
       var mapp = places.map((loc, index) => (

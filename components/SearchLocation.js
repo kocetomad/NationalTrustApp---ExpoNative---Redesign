@@ -9,6 +9,8 @@ import {
   Suspense,
   TouchableOpacity,
 } from "react-native";
+
+//Button for filtering focused area
 const SearchLocation = ({ search, region, zoom, loading }) => {
   let out = <Text>Loading...</Text>;
   if (loading == ""){
@@ -26,6 +28,7 @@ const SearchLocation = ({ search, region, zoom, loading }) => {
       </TouchableOpacity>
     );
   } else {
+    //butto nchanges to view if zoomed out too far 
     out = (
       <View style={styles.overlaySharp}>
         {loading == "loading" ? <Text style={{}}>Loading...</Text> : <Text style={{}}>Zoom in to use area filtering</Text>}

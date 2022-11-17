@@ -99,7 +99,7 @@ export default function MyMap({
   onRegionChange = (region) => {
     // this.setState({ region });
   };
-
+  //Changes several state vars on focused region chaned, tracks zoom and region
   onRegionChangeComplete = (region) => {
     (async function () {
       const windowWidth = Dimensions.get("window").width;
@@ -121,6 +121,7 @@ export default function MyMap({
     });
   };
 
+  //Filtering locations on focused region
   const localSearchPress = (region) => {
     // this.setState({ region });
     setLoadingStatus("loading");

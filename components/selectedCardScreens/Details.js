@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { replaceAll, fixHtmlString, OpenURLButton } from "../Util";
 
+//Defines the layout for the Details tab inside the details screen
 export const Details = ({ route }) => {
   const { details } = route.params;
   var htmlString = details.description_html;

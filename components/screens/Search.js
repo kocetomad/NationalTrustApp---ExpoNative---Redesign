@@ -60,12 +60,14 @@ const Item = ({ title, allTags }) => (
   </View>
 );
 
+//Search bar view
 const Search = ({ route }) => {
   const navigation = useNavigation();
   const { locs } = route.params;
   const [loactions, setLoactions] = useState(null);
   let marks = [];
 
+  //Manipulates initial unfiltered list 
   useEffect(() => {
     (async () => {
       let mapMarkers = [];

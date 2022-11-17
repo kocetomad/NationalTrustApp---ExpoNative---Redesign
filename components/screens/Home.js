@@ -100,7 +100,7 @@ function HomeScreen({ route }) {
         //
       })
   }, [textSearchbar]);
-
+  //Hiding bottom nav in details page
   useLayoutEffect(() => {
     const routeName = getFocusedRouteNameFromRoute(route);
     if (routeName === "Location detials") {

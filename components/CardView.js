@@ -17,7 +17,9 @@ import { useNavigation } from "@react-navigation/native";
 
 const locationDetails = require("../assets/places.json");
 
+//Bottom sheet cardview
 const Card = ({ location }) => {
+  //Mapping the location tags as Badge components 
   const MappedBAdges = ({ allTags }) => {
     return allTags.map((tag) => <Badge key={tag} name={tag}></Badge>);
   };

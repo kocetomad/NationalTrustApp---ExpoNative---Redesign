@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Modal, StyleSheet, Text, ActivityIndicator } from 'react-native';
 
 export default function LoadingModal(props) {
-
+    //Loading Modal, scrapped feature
     return (
         <Modal animationType="fade"
             transparent={false}

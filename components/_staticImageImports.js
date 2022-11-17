@@ -1,3 +1,4 @@
+//Static image imports for the decompiled DB, currently redundant but can be used in the future
 const images = [
   {
     _id: 1,

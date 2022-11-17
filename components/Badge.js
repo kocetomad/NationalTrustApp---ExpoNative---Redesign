@@ -1,5 +1,7 @@
 import React from "react";
 import { View, StyleSheet, Text } from "react-native";
+
+//Badge view for location tags
 const Badge = ({ name }) => {
   return (
     <View style={styles.card}>

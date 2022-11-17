@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { replaceAll, fixHtmlString, OpenURLButton } from "../Util";
 
+//Defines the Directions for the Lcoation view inside the details screen
 export const Location = ({ route }) => {
   const { details, directions } = route.params;
 

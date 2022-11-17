@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { replaceAll, fixHtmlString, OpenURLButton } from "../Util";
 
+//Defines the layout for the admissions tab inside the details screen
 export const Admissions = ({ route }) => {
   const { details, directions, admissions } = route.params;
   var htmlString = details.description_html;

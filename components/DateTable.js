@@ -8,6 +8,7 @@ import {
   Col,
 } from "react-native-table-component";
 
+//Table component for displaying oppening hours
 export const DateTable = ({ schedule }) => {
   const {
     mon_description,
@@ -86,7 +87,6 @@ export const DateTable = ({ schedule }) => {
   };
 
   const windowWidth = Dimensions.get("window").width;
-
   return (
     <Table borderStyle={{}}>
       <Row

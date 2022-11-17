@@ -10,6 +10,7 @@ function Settings({ route }) {
   const [loading, setLoading] = useState(false);
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
+  //preventing enitial settings toggle 
   useEffect(() => {
     if (initial > 0) {
       setLoading(true);

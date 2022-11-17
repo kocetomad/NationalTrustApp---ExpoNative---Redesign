@@ -26,6 +26,8 @@ const locationOppeningTimePattern = require("../../assets/opening_times_patterns
 const locationOppeningTimeWeeks = require("../../assets/opening_times_weeks.json");
 const locationOppeningLabels = require("../../assets/opening_times_labels.json");
 
+
+//Defines the layout for the working time tab inside the details view
 export const WorkingTime = ({ route }) => {
   const { details, directions, admissions, workingTime } = route.params;
   var htmlString = details.description_html;
@@ -94,9 +96,9 @@ export const WorkingTime = ({ route }) => {
 const MapWorkingTime = ({ admissions, workingTime }) => {
   const windowWidth = Dimensions.get("window").width;
 
-  return workingTime.map((wt) => (
+  return workingTime.map((wt,index) => (
     <View
-      key={wt.label}
+      key={index}
       style={{
         marginTop: 10,
         elevation: 8,
