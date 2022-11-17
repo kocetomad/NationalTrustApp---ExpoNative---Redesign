@@ -6,7 +6,8 @@ moddeled based on the Airbnb app as well, the focused area filtering.
 The data used for the app comes part from the national trust API and part from the decompiled cache of 
 the original application.
 
-<iframe src="https://drive.google.com/file/d/1TbCdPgx9YMXYJW3kQFxd5w2RkK78ICaR/preview" width="640" height="480" allow="autoplay"></iframe>
+App demo:
+https://drive.google.com/file/d/1TbCdPgx9YMXYJW3kQFxd5w2RkK78ICaR/preview"
 
 This image illustrates how the date is aggregated together in one of the screens:
 <img src="https://i.imgur.com/LmtJLhw.png"></img>
