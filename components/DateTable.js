@@ -130,6 +130,6 @@ const styles = StyleSheet.create({
   head: { height: 40, backgroundColor: "#f1f8ff" },
   wrapper: { flexDirection: "row" },
   title: { flex: 1, backgroundColor: "#f6f8fa" },
-  row: { height: 28, borderBottomWidth: 1 },
+  row: { height: 28, borderBottomWidth: 1, },
   text: { textAlign: "center", fontSize: 10 },
 });

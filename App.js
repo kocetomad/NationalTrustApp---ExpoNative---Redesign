@@ -8,9 +8,8 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { LogBox } from 'react-native';
 
-LogBox.ignoreLogs([
-  'Non-serializable values were found in the navigation state',
-]); 
+//Hides trivial warning, relating mostly to styling. Known issue with tha data Table component I am using 
+LogBox.ignoreAllLogs();
 
 export default function App() {
   console.log("App Launched");
