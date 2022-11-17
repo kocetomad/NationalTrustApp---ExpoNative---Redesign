@@ -30,8 +30,8 @@ const MapAddmissions = ({ admissions }) => {
       <Text style={styles.title}>
         {add.name} - {add.category}
       </Text>
-      <Text style={{ fontSize: 20 }}>
-        Standard price: {add.standard_amount} {add.standard_currency}
+      <Text style={{ fontSize: 20, paddingHorizontal:10,paddingBottom:10 }}>
+        Standard price: {add.standard_amount.toString().length < 4 ? add.standard_amount.toString().substring(0, 1) + "." + add.standard_amount.toString().substring(1): add.standard_amount.toString().substring(0, 2) + "." + add.standard_amount.toString().substring(2)} {add.standard_currency}
       </Text>
       {add.gift_aid_currency.length > 0 ? (
         <Text>
@@ -52,10 +52,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.26,
     elevation: 8,
     backgroundColor: "white",
-    borderRadius: 10,
-    marginBottom: 1,
+    borderWidth: 1,
+    borderColor: "#3c775b",
+
+    marginBottom: 10,
     marginHorizontal: 10,
-    padding: 20,
     marginTop: 15,
     alignSelf: "center",
     height: "auto",
@@ -70,13 +71,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.26,
     elevation: 8,
     backgroundColor: "white",
-    borderRadius: 10,
     marginBottom: 7,
-    padding: 20,
+    paddingHorizontal: 20,
     paddingVertical: 10,
-    marginTop: -10,
     fontSize: 20,
     color: "white",
+    fontWeight: "bold",
     alignSelf: "center",
     height: "auto",
     width: "100%",

@@ -23,16 +23,19 @@ import Badge from "../Badge";
 const Home = ({ route }) => {
   const [places, setVisiblePlaces] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { setAllLocations,settings } = route.params;
+  const [bottomSheetState, setBottomSheetState] = useState({text:"-"});
+
+  const { setAllLocations, settings } = route.params;
+
   return (
     <View style={{ flex: 1 }}>
-      {/* <LoadingModal modalVisible={loading}/>  */}
-
+      {settings ? <Text style={{alignSelf:"center", backgroundColor:"#3c775b", width:"100%",textAlign:"center", padding:2, color: "white"}}>Always Open zones enabled</Text> : ""}
       <MyMap
         settings={settings}
         places={places}
         setPlaces={setVisiblePlaces}
         setAllLocations={setAllLocations}
+        setBottomSheetState = {setBottomSheetState}
       />
 
       <BottomSheetMain
@@ -40,13 +43,14 @@ const Home = ({ route }) => {
         setLoading={setLoading}
         setPlaces={setVisiblePlaces}
         places={places}
+        bottomSheetState={bottomSheetState}
       />
     </View>
   );
 };
+let skipInitial = 0;
 
 function HomeScreen({ route }) {
-  const { settings } = route.params;
 
   const Stack = createStackNavigator();
   const navigation = useNavigation();
@@ -74,7 +78,14 @@ function HomeScreen({ route }) {
     SearchbarUpdated(allLocations)
       .then((data) => setFilteredLocations(data))
       .then(() => {
-        navigation.navigate("Search", { locs: filteredLocations });
+        if(skipInitial!=0){
+          navigation.navigate("Search", { locs: filteredLocations });
+        }
+          
+          skipInitial++;
+          console.log("init:"+skipInitial)
+        
+        //
       })
       .catch(console.error);
   }, [textSearchbar]);
@@ -94,7 +105,7 @@ function HomeScreen({ route }) {
         id="Home"
         name="Home"
         component={Home}
-        initialParams={{ setAllLocations: setAllLocations, settings:settings }}
+        initialParams={{ setAllLocations: setAllLocations,}}
         options={{
           
           headerTitle: () => (

@@ -4,13 +4,18 @@ import * as React from "react";
 import { useCallback, useMemo, useRef, useState, useEffect } from "react";
 import Card from "./CardView";
 
-const BottomSheetMain = ({ setPlaces, places, setLoading,loading }) => {
+const BottomSheetMain = ({ setPlaces, places, setLoading,loading,bottomSheetState }) => {
   const bottomSheetRef = useRef(null);
   const [mapped, setMapped] = useState([]);
   // variables
   const snapPoints = useMemo(() => ["9%", "100%"], []);
 
-  // callbacks
+  useEffect(() => {
+    if(bottomSheetState.text.includes("National trust locations in the filtered area")){
+      bottomSheetRef.current.expand()
+    }
+  }, [bottomSheetState]);
+  
   const handleSheetChanges = useCallback((index) => {
     console.log("handle sheet change");
   }, []);
@@ -42,7 +47,7 @@ const BottomSheetMain = ({ setPlaces, places, setLoading,loading }) => {
       onChange={handleSheetChanges}
     >
       <View style={sheetStyle.contentContainer}>
-        <Text>{places.length} National trust locations in this area 🎉</Text>
+        <Text>{bottomSheetState.text}</Text>
       </View>
       <BottomSheetScrollView contentContainerStyle={sheetStyle.ScrollView}>
         <MapScopedLocs locs={mapped} />

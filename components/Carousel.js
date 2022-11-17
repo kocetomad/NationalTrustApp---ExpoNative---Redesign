@@ -9,7 +9,7 @@ function PlaceCarousel({ pics }) {
       <Carousel
         loop
         width={width}
-        height={width / 2}
+        height={width*0.75}
         autoPlay={true}
         data={pics}
         scrollAnimationDuration={1000}

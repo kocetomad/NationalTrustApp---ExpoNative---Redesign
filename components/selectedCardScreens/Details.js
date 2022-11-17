@@ -19,9 +19,9 @@ export const Details = ({ route }) => {
     <View style={{ flex: 1 }}>
       <ScrollView>
         <View style={styles.card}>
-        <Text style={styles.title}>Description:</Text>
+          <Text style={styles.title}>Description:</Text>
 
-          <Text>{plainString}</Text>
+          <Text style={{ padding: 20, fontSize: 16 }}>{plainString}</Text>
         </View>
       </ScrollView>
     </View>
@@ -36,10 +36,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.26,
     elevation: 8,
     backgroundColor: "white",
-    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#3c775b",
+
     marginBottom: 10,
     marginHorizontal: 10,
-    padding: 20,
     marginTop: 15,
     alignSelf: "center",
     height: "auto",
@@ -47,24 +48,22 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     justifyContent: "center", //Centered vertically
   },
-  title:
-  {
+  title: {
     shadowColor: "black",
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 6,
     shadowOpacity: 0.26,
     elevation: 8,
     backgroundColor: "white",
-    borderRadius: 10,
     marginBottom: 7,
     padding: 20,
-    marginTop: -10,
     fontSize: 20,
     color: "white",
+    fontWeight: "bold",
     alignSelf: "center",
     height: "auto",
     width: "100%",
     backgroundColor: "#3c775b",
     justifyContent: "center", //Centered vertically
-  }
+  },
 });

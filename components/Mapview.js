@@ -23,7 +23,13 @@ import SearchLocation from "./SearchLocation";
 
 const locs = require("../assets/all-places.json");
 
-export default function MyMap({ places, setPlaces, setAllLocations,settings }) {
+export default function MyMap({
+  places,
+  setPlaces,
+  setAllLocations,
+  settings,
+  setBottomSheetState,
+}) {
   const [state, setData] = useState([
     {
       openingTimeStatus: "Open today",
@@ -48,8 +54,13 @@ export default function MyMap({ places, setPlaces, setAllLocations,settings }) {
     },
   ]);
   const [focusedRegion, setFocusedRegion] = useState({
-    zoom: null,
-    region: null,
+    zoom: 11,
+    region: {
+      latitude: 50.641718,
+      longitude: -3.408798,
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
+    },
   });
   const [loadingStatus, setLoadingStatus] = useState("loaded");
   const [location, setLocation] = useState(null);
@@ -57,7 +68,6 @@ export default function MyMap({ places, setPlaces, setAllLocations,settings }) {
 
   //FETCHING ALL NATIONAL TRUST LOCATIONS
   useEffect(() => {
-    
     (async () => {
       const mapMarkers = [];
       for (let obj in locs) {
@@ -67,6 +77,9 @@ export default function MyMap({ places, setPlaces, setAllLocations,settings }) {
     })()
       .then((data) => {
         setData(data);
+        setPlaces(data.slice(0, 20));
+        setBottomSheetState({text: "20 Most popular destinations 🔥" });
+
         setAllLocations(data);
       })
       .catch(console.error);
@@ -94,7 +107,9 @@ export default function MyMap({ places, setPlaces, setAllLocations,settings }) {
         Math.log2(360 * (windowWidth / 256 / region.longitudeDelta)) + 1;
       console.log(zoom);
       if (zoom > 10.1) {
+        
       } else {
+        setBottomSheetState({text: "20 most popular destinations 🔥" });
         setPlaces(state.slice(0, 20));
       }
       let reg = {
@@ -123,8 +138,11 @@ export default function MyMap({ places, setPlaces, setAllLocations,settings }) {
         );
       });
       setPlaces(newArray);
-    })().then(() => {
+      return newArray;
+    })().then((newArray) => {
       setLoadingStatus("loaded");
+      setBottomSheetState({text: newArray.length + " National trust locations in the filtered area 🎉" })
+
       console.log("finished loading");
     });
   };
@@ -144,7 +162,7 @@ export default function MyMap({ places, setPlaces, setAllLocations,settings }) {
         }}
         animationEnabled={false}
       >
-        <MapGeoJson zonesEnabled={false}/>
+        <MapGeoJson zonesEnabled={settings} />
         {state.map((loc) => (
           <Marker
             key={loc.id}
@@ -163,14 +181,29 @@ export default function MyMap({ places, setPlaces, setAllLocations,settings }) {
                 navigation.navigate("Location detials", { loc: loc })
               }
             >
-              
-              <View style={{flexDirection:"row",backgroundColor:"white", 
-              maxWidth:300,alignSelf:"center"}}>
-                <View style={{alignItems:"flex-start", }}>
-                <Text style={{backgroundColor:"#3c775b",width:"100%",padding:7, color:"white",fontSize:17}}>{loc.title}</Text>
-                <Text style={{padding:7}}>{loc.description}</Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  backgroundColor: "white",
+                  maxWidth: 300,
+                  alignSelf: "center",
+                }}
+              >
+                <View style={{ alignItems: "flex-start" }}>
+                  <Text
+                    style={{
+                      backgroundColor: "#3c775b",
+                      width: "100%",
+                      padding: 7,
+                      color: "white",
+                      fontSize: 17,
+                    }}
+                  >
+                    {loc.title}
+                  </Text>
+                  <Text style={{ padding: 7 }}>{loc.description}</Text>
                 </View>
-                
+
                 {/* <Text style={{}}>
                 
                   
@@ -214,5 +247,4 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     backgroundColor: "rgba(255, 255, 255, 1)",
   },
-  
 });

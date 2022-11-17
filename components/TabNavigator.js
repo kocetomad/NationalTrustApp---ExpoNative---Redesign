@@ -7,6 +7,7 @@ import Settings from "./screens/Settings";
 import SelectedCardScreen from "./screens/SelectedCard";
 // react-native-vector-icons/Ionicons otherwise.
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { Title } from "react-native-paper";
 
 const Tab = createBottomTabNavigator();
 const MyTheme = {
@@ -15,12 +16,11 @@ const MyTheme = {
     ...DefaultTheme.colors,
     primary: '#4F8EF7',
     card: '#c5c1bc',
-    text: 'rgb(28, 28, 30)',
   },
 };
 
 function TabNav() {
-  const [settings, setSettings] = useState(false);
+  const [settings, setSettings] = useState("false");
 
   return (
     <NavigationContainer theme={MyTheme}>
@@ -30,7 +30,7 @@ function TabNav() {
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
 
-            if (route.name === "Main") {
+            if (route.name === "Discover") {
               iconName = focused
                 ? "map-sharp"
                 : "map-outline";
@@ -41,11 +41,13 @@ function TabNav() {
           },
           tabBarActiveTintColor: "#3c775b",
           tabBarInactiveTintColor: "gray",
+          tabBarLabelStyle: { fontSize: 13,fontWeight:"bold" },
+
         })}
       >
         <Tab.Group>
-          <Tab.Screen name="Main" initialParams={{ settings:settings }} component={HomeScreen} options={{headerShown: false}}/>
-          <Tab.Screen name="Settings" initialParams={{ setSettings:setSettings }} component={Settings} />
+          <Tab.Screen name="Discover" component={HomeScreen} options={{headerShown: false}}/>
+          <Tab.Screen name="Settings" component={Settings} />
         </Tab.Group>
       </Tab.Navigator>
     </NavigationContainer>

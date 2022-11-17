@@ -173,8 +173,8 @@ export const polygon = (loc) =>{
   export const MapGeoJson = ({zonesEnabled}) => {
     //console.log("state ", state)
     if (zonesEnabled == true){
-      return alwaysOpen.features.map((geo) => (
-        <Polygon
+      return alwaysOpen.features.map((geo,index, array) => (
+        <Polygon key={index}
       coordinates={ polygon(geo)} 
       fillColor='rgba(30, 238, 23, 0.52)'/>
       ));

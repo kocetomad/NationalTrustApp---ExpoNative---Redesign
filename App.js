@@ -6,6 +6,11 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import TabNav from "./components/TabNavigator";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { LogBox } from 'react-native';
+
+LogBox.ignoreLogs([
+  'Non-serializable values were found in the navigation state',
+]); 
 
 export default function App() {
   console.log("App Launched");
